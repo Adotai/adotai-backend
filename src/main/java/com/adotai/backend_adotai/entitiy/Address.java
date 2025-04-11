@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String street;
 
@@ -34,7 +34,7 @@ public class Address {
         this.zipCode = zipCode;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

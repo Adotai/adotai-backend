@@ -1,5 +1,5 @@
 CREATE TABLE address (
-    id       BIGSERIAL       PRIMARY KEY,
+    id       SERIAL       PRIMARY KEY,
     street   VARCHAR(100) NOT NULL,
     number   INTEGER      NOT NULL,
     city     VARCHAR(100) NOT NULL,
@@ -48,11 +48,11 @@ CREATE TABLE ong_animal_type (
 );
 
 CREATE TABLE users (
-    id         BIGSERIAL    PRIMARY KEY,
+    id         SERIAL    PRIMARY KEY,
     name       VARCHAR(100) NOT NULL,
     cpf        VARCHAR(30)  UNIQUE,
     email      VARCHAR(150) NOT NULL UNIQUE,
-    role       VARCHAR(10)  NOT NULL DEFAULT 'normal',
+    role       VARCHAR(10)  DEFAULT 'normal',
     password   VARCHAR(100) NOT NULL,
     telephone  VARCHAR(30)  NOT NULL,
     address_id INTEGER      NOT NULL,
