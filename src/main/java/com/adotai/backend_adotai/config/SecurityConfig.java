@@ -41,12 +41,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.disable()) // Desabilita CSRF (somente para testes locais!)
+                .csrf(csrf -> csrf.disable())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
+
 
     @Bean
     public JwtEncoder jwtEncoder() {

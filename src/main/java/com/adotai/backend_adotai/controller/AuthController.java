@@ -1,5 +1,6 @@
 package com.adotai.backend_adotai.controller;
 
+import com.adotai.backend_adotai.dto.Api.ResponseApi;
 import com.adotai.backend_adotai.dto.login.request.RequestLoginDTO;
 import com.adotai.backend_adotai.dto.login.response.ResponseLoginDTO;
 import com.adotai.backend_adotai.service.AuthService;
@@ -17,7 +18,8 @@ public class AuthController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseLoginDTO> login(@RequestBody RequestLoginDTO dto) {
-        return ResponseEntity.ok(authService.login(dto));
+    public ResponseEntity<ResponseApi> login(@RequestBody RequestLoginDTO dto) {
+        ResponseApi response = authService.login(dto);
+        return ResponseEntity.status(response.status()).body(response);
     }
 }

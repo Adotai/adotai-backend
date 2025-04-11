@@ -1,5 +1,6 @@
 package com.adotai.backend_adotai.service;
 
+import com.adotai.backend_adotai.dto.Api.ResponseApi;
 import com.adotai.backend_adotai.dto.login.request.RequestLoginDTO;
 import com.adotai.backend_adotai.dto.login.response.ResponseLoginDTO;
 import com.adotai.backend_adotai.entitiy.User;
@@ -26,16 +27,16 @@ public class AuthService {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public ResponseLoginDTO login(RequestLoginDTO dto) {
+    public ResponseApi login(RequestLoginDTO dto) {
         Optional<User> userOptional = userRepository.findByEmail(dto.email());
 
         if (userOptional.isEmpty()) {
-            throw new RuntimeException("Usuário não encontrado");
+            return ResponseApi.error(401,"User not found");
         }
         User user = userOptional.get();
 
         if (!passwordEncoder.matches(dto.password(), user.getPassword())) {
-            throw new RuntimeException("Senha inválida");
+            return ResponseApi.error(401,"Invalid login");
         }
 
         var now = Instant.now();
@@ -49,6 +50,6 @@ public class AuthService {
 
         String token = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
-        return new ResponseLoginDTO(token);
+        return ResponseApi.success("Success",new ResponseLoginDTO(token));
     }
 }
