@@ -2,9 +2,11 @@ package com.adotai.backend_adotai.controller;
 
 import com.adotai.backend_adotai.dto.Address.request.RequestAddressDTO;
 import com.adotai.backend_adotai.dto.Address.response.ResponseAddressDTO;
+import com.adotai.backend_adotai.dto.Api.ResponseApi;
 import com.adotai.backend_adotai.entitiy.Address;
 import com.adotai.backend_adotai.mapper.AddressMapper;
 import com.adotai.backend_adotai.service.AddressService;
+import com.adotai.backend_adotai.util.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,8 +22,8 @@ public class AddressController {
     private AddressService addressService;
 
     @PostMapping
-    public ResponseEntity<ResponseAddressDTO> create(@RequestBody RequestAddressDTO dto){
-        Address address = addressService.create(dto);
-        return ResponseEntity.ok(AddressMapper.toDto(address));
+    public ResponseEntity<ResponseApi> create(@RequestBody RequestAddressDTO dto){
+       ResponseApi response = addressService.create(dto);
+        return ResponseEntity.status(response.status()).body(response);
     }
 }

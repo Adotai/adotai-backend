@@ -42,9 +42,9 @@ public class UserService {
         if ((!ValidationUtils.isValidEmail(dto.email()))||(userRepository.existsByEmail(dto.email()))){
             return ResponseApi.error(400,"Email invalid or already exists");
         }
-        Address address = addressRepository.findById(dto.addressId()).orElse(null);
+        Optional<Address> address = addressRepository.findById(dto.addressId());
 
-        if (address == null) {
+        if (address.isEmpty()) {
             return ResponseApi.error(404,"Address not found");
         }
 
@@ -53,7 +53,7 @@ public class UserService {
         }
 
         String encodedPassword = passwordEncoder.encode(dto.password());
-        User user = UserMapper.toEntity(dto, address, encodedPassword);
+        User user = UserMapper.toEntity(dto, address.get(), encodedPassword);
 
         try{
             return ResponseApi.success("Success",userRepository.save(user));
