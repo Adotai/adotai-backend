@@ -17,4 +17,12 @@ public class ValidationUtils {
     public static boolean isValidEmail(String email){
         return email != null && email.matches("^[\\w-.]+@[\\w-]+\\.[a-z]{2,}$");
     }
+
+    public static boolean isValidCnpj(String cnpj){
+        return cnpj.replaceAll("\\D","").length() == 14;
+    }
+
+    public static boolean isValidCep(String cep){
+        return cep.replaceAll("\\D","").length() == 8;
+    }
 }

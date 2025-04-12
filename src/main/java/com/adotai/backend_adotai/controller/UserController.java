@@ -22,7 +22,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<ResponseApi> create(@RequestBody RequestUserDTO dto) {
-        ResponseApi response = userService.createUser(dto);
+        ResponseApi response = userService.create(dto);
         return ResponseEntity.status(response.status()).body(response);
     }
 

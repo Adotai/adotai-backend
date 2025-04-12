@@ -34,9 +34,11 @@ CREATE TABLE ongs (
     password         VARCHAR(100) NOT NULL,
     social_statute   TEXT         NOT NULL,
     board_meeting    TEXT         NOT NULL,
+    address_id       INTEGER      NOT NULL,
     status           BOOLEAN      NOT NULL DEFAULT TRUE,
     created_at       TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
-    updated_at       TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+    updated_at       TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_address_id FOREIGN KEY (address_id) REFERENCES address(id)
 );
 
 CREATE TABLE ong_animal_type (
