@@ -1,41 +1,41 @@
 package com.adotai.backend_adotai.controller;
 
-import com.adotai.backend_adotai.dto.Address.request.RequestAddressDTO;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
-import com.adotai.backend_adotai.service.AddressService;
+import com.adotai.backend_adotai.dto.Ong.Request.RequestOngDTO;
+import com.adotai.backend_adotai.service.OngService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("address")
-public class AddressController {
+@RequestMapping("/ongs")
+public class OngController {
 
     @Autowired
-    private AddressService addressService;
+    private OngService ongService;
 
     @PostMapping
-    public ResponseEntity<ResponseApi> create(@RequestBody RequestAddressDTO dto){
-       ResponseApi response = addressService.create(dto);
+    public ResponseEntity<ResponseApi> create(@RequestBody RequestOngDTO dto){
+        ResponseApi response = ongService.create(dto);
         return ResponseEntity.status(response.status()).body(response);
     }
 
     @GetMapping
     public ResponseEntity<ResponseApi> findAll(){
-        ResponseApi response = addressService.findAll();
+        ResponseApi response = ongService.findAll();
         return ResponseEntity.status(response.status()).body(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ResponseApi> findById(@PathVariable int id){
-        ResponseApi response = addressService.findById(id);
+        ResponseApi response = ongService.findById(id);
         return ResponseEntity.status(response.status()).body(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseApi> deleteById(@PathVariable int id){
-        ResponseApi response = addressService.deleteById(id);
+    public ResponseEntity<ResponseApi> delete(@PathVariable int id){
+        ResponseApi response = ongService.delete(id);
         return ResponseEntity.status(response.status()).body(response);
     }
 }

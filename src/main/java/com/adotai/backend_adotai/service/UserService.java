@@ -28,7 +28,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public ResponseApi createUser(RequestUserDTO dto) {
+    public ResponseApi<ResponseUserDTO> create(RequestUserDTO dto) {
 
         if ((!ValidationUtils.isValidCpf(dto.cpf())) ||
                 (userRepository.existsByCpf(ValidationUtils.formatStrNumber(dto.cpf())))) {
@@ -56,19 +56,19 @@ public class UserService {
         User user = UserMapper.toEntity(dto, address.get(), encodedPassword);
 
         try{
-            return ResponseApi.success("Success",userRepository.save(user));
+            return ResponseApi.success("Success",UserMapper.toDto(userRepository.save(user)));
         } catch (Exception e) {
             return ResponseApi.error(500,e.getMessage());
         }
     }
 
-    public ResponseApi getUsers(){
+    public ResponseApi<List<ResponseUserDTO>> getUsers(){
       List<User> users = userRepository.findAll();
       List<ResponseUserDTO> dto = users.stream().map(UserMapper::toDto).toList();
       return ResponseApi.success("Success",dto);
     }
 
-    public ResponseApi getUserById(int id){
+    public ResponseApi<ResponseUserDTO> getUserById(int id){
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()){
             return ResponseApi.error(404,"User not found");
@@ -78,13 +78,13 @@ public class UserService {
         }
     }
 
-    public ResponseApi deleteUser(int id){
+    public ResponseApi<ResponseUserDTO> deleteUser(int id){
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
             return ResponseApi.error(404,"User not found");
         }else{
             userRepository.delete(user.get());
-            return ResponseApi.success("User:"+ id + " deleted.",null);
+            return ResponseApi.success("Success",UserMapper.toDto(user.get()));
         }
     }
 }
