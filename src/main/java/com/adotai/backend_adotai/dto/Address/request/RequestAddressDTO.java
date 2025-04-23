@@ -1,4 +1,4 @@
-package com.adotai.backend_adotai.dto.request;
+package com.adotai.backend_adotai.dto.Address.request;
 
 import com.adotai.backend_adotai.entitiy.enum_types.States;
 
