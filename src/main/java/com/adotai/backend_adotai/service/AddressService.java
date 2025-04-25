@@ -3,7 +3,7 @@ package com.adotai.backend_adotai.service;
 import com.adotai.backend_adotai.dto.Address.request.RequestAddressDTO;
 import com.adotai.backend_adotai.dto.Address.response.ResponseAddressDTO;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
-import com.adotai.backend_adotai.entitiy.Address;
+import com.adotai.backend_adotai.entity.Address;
 import com.adotai.backend_adotai.mapper.AddressMapper;
 import com.adotai.backend_adotai.repository.AddressRepository;
 import com.adotai.backend_adotai.util.ValidationUtils;

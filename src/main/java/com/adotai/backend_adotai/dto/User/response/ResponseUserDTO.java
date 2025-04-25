@@ -1,7 +1,6 @@
 package com.adotai.backend_adotai.dto.User.response;
 
 import com.adotai.backend_adotai.dto.Address.response.ResponseAddressDTO;
-import com.adotai.backend_adotai.entitiy.Address;
 
 public record ResponseUserDTO(int id,
                               String name,

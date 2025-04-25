@@ -3,7 +3,7 @@ package com.adotai.backend_adotai.service;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
 import com.adotai.backend_adotai.dto.login.request.RequestLoginDTO;
 import com.adotai.backend_adotai.dto.login.response.ResponseLoginDTO;
-import com.adotai.backend_adotai.entitiy.User;
+import com.adotai.backend_adotai.entity.User;
 import com.adotai.backend_adotai.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;

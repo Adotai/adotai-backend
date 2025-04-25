@@ -1,6 +1,6 @@
 package com.adotai.backend_adotai.repository;
 
-import com.adotai.backend_adotai.entitiy.User;
+import com.adotai.backend_adotai.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
