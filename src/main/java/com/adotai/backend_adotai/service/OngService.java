@@ -3,11 +3,13 @@ package com.adotai.backend_adotai.service;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
 import com.adotai.backend_adotai.dto.Ong.Request.RequestOngDTO;
 import com.adotai.backend_adotai.dto.Ong.Response.ResponseOngDTO;
-import com.adotai.backend_adotai.entitiy.Address;
-import com.adotai.backend_adotai.entitiy.Ong;
+import com.adotai.backend_adotai.entity.Address;
+import com.adotai.backend_adotai.entity.Ong;
+import com.adotai.backend_adotai.entity.PhotosEntities.OngPhotos;
 import com.adotai.backend_adotai.mapper.OngMapper;
 import com.adotai.backend_adotai.repository.AddressRepository;
 import com.adotai.backend_adotai.repository.OngRepository;
+import com.adotai.backend_adotai.repository.PhotosRepository.OngPhotosRepository;
 import com.adotai.backend_adotai.util.ValidationUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -20,11 +22,13 @@ import java.util.Optional;
 public class OngService {
 
     private final OngRepository ongRepository;
+    private final OngPhotosRepository ongPhotosRepository;
     private final AddressRepository addressRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public OngService(OngRepository ongRepository, AddressRepository addressRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JwtEncoder jwtEncoder) {
+    public OngService(OngRepository ongRepository, AddressRepository addressRepository, BCryptPasswordEncoder bCryptPasswordEncoder, JwtEncoder jwtEncoder, OngPhotosRepository ongPhotosRepository) {
         this.ongRepository = ongRepository;
+        this.ongPhotosRepository = ongPhotosRepository;
         this.addressRepository = addressRepository;
         this.passwordEncoder = bCryptPasswordEncoder;
     }
@@ -50,10 +54,28 @@ public class OngService {
        if(dto.password().isBlank())
             return ResponseApi.error(404,"Missing or invalid password.");
 
+        if (dto.documents() == null || dto.documents().getSocialStatute().isBlank() || dto.documents().getBoardMeeting().isBlank()) {
+            return ResponseApi.error(404, "Documentos faltando ou inválidos (socialStatute or boardMeeting).");
+        }
+
+        if (dto.photos() == null || dto.photos().isEmpty()) {
+            return ResponseApi.error(404, "Fotos faltando ou inválidas.");
+        }
+
+
         String encodedPassword = passwordEncoder.encode(dto.password());
+
         try{
             Ong ong = OngMapper.toEntity(dto,address.get(),encodedPassword);
             ongRepository.save(ong);
+
+//            dto.photos().forEach(photoDto -> {
+//                OngPhotos ongPhoto = new OngPhotos();
+//                ongPhoto.setPhotoUrl(photoDto.getPhotoUrl());
+//                ongPhoto.setOng(ong); // Associa a foto à ONG recém-criada
+//                ongPhotosRepository.save(ongPhoto);
+//            });
+
             return ResponseApi.success("Success",OngMapper.toDto(ong));
         } catch (Exception e) {
             return ResponseApi.error(500,"Error: " + e.getMessage());
@@ -85,6 +107,7 @@ public class OngService {
         try{
             ongRepository.deleteById(id);
             ResponseOngDTO dto = OngMapper.toDto(ong.get());
+
             return ResponseApi.success("Success",dto);
         } catch (Exception e) {
             return ResponseApi.error(500,"Error: " + e.getMessage());

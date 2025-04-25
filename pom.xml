@@ -70,7 +70,7 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
-			<version>9.22.3</version>
+			<version>8.5.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -84,6 +84,16 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>8.5.13</version>
+				<configuration>
+					<url>jdbc:postgresql://localhost:5432/adotai_db</url>
+					<user>postgres</user>
+					<password>pepepeuuu2814</password>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,6 +1,6 @@
 package com.adotai.backend_adotai.dto.Address.request;
 
-import com.adotai.backend_adotai.entitiy.enum_types.States;
+import com.adotai.backend_adotai.entity.enum_types.States;
 
 public record RequestAddressDTO(
         String street,

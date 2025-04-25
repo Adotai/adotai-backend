@@ -3,9 +3,9 @@ package com.adotai.backend_adotai.mapper;
 import com.adotai.backend_adotai.dto.Address.response.ResponseAddressDTO;
 import com.adotai.backend_adotai.dto.User.request.RequestUserDTO;
 import com.adotai.backend_adotai.dto.User.response.ResponseUserDTO;
-import com.adotai.backend_adotai.entitiy.Address;
-import com.adotai.backend_adotai.entitiy.User;
-import com.adotai.backend_adotai.entitiy.enum_types.Role;
+import com.adotai.backend_adotai.entity.Address;
+import com.adotai.backend_adotai.entity.User;
+import com.adotai.backend_adotai.entity.enum_types.Role;
 import com.adotai.backend_adotai.util.ValidationUtils;
 
 public class UserMapper {

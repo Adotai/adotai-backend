@@ -1,7 +1,10 @@
 package com.adotai.backend_adotai.dto.Ong.Response;
 
 import com.adotai.backend_adotai.dto.Address.response.ResponseAddressDTO;
-import com.adotai.backend_adotai.entitiy.Documents;
+import com.adotai.backend_adotai.entity.Documents;
+import com.adotai.backend_adotai.entity.PhotosEntities.OngPhotos;
+
+import java.util.List;
 
 public record ResponseOngDTO(int id,
                              String name,
@@ -11,5 +14,7 @@ public record ResponseOngDTO(int id,
                              String pix,
                              Documents documents,
                              ResponseAddressDTO address,
+//                             List<String> photos,
+                             List<ResponseOngPhotosDTO> photos,
                              boolean status) {
 }
