@@ -14,7 +14,6 @@ public record ResponseOngDTO(int id,
                              String pix,
                              Documents documents,
                              ResponseAddressDTO address,
-//                             List<String> photos,
                              List<ResponseOngPhotosDTO> photos,
                              boolean status) {
 }
