@@ -3,7 +3,10 @@ package com.adotai.backend_adotai.service;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
 import com.adotai.backend_adotai.dto.login.request.RequestLoginDTO;
 import com.adotai.backend_adotai.dto.login.response.ResponseLoginDTO;
+import com.adotai.backend_adotai.entity.Ong;
 import com.adotai.backend_adotai.entity.User;
+import com.adotai.backend_adotai.entity.enum_types.Role;
+import com.adotai.backend_adotai.repository.OngRepository;
 import com.adotai.backend_adotai.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -18,11 +21,13 @@ import java.util.Optional;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final OngRepository ongRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtEncoder jwtEncoder;
 
-    public AuthService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, JwtEncoder jwtEncoder) {
+    public AuthService(UserRepository userRepository,OngRepository ongRepository ,BCryptPasswordEncoder passwordEncoder, JwtEncoder jwtEncoder) {
         this.userRepository = userRepository;
+        this.ongRepository = ongRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtEncoder = jwtEncoder;
     }
@@ -31,7 +36,28 @@ public class AuthService {
         Optional<User> userOptional = userRepository.findByEmail(dto.email());
 
         if (userOptional.isEmpty()) {
-            return ResponseApi.error(401,"User not found");
+            Optional<Ong> ongOptional = ongRepository.findByEmail(dto.email());
+            if(ongOptional.isEmpty()){
+                return ResponseApi.error(401,"User not found");
+            }
+            Ong ong = ongOptional.get();
+
+            if (!passwordEncoder.matches(dto.password(), ong.getPassword())) {
+                return ResponseApi.error(401, "Invalid login");
+            }
+
+            var now = Instant.now();
+            var claims = JwtClaimsSet.builder()
+                    .issuer("adotai")
+                    .subject(ong.getEmail())
+                    .issuedAt(now)
+                    .expiresAt(now.plusSeconds(3600)) // 1 hora
+                    .claim("role", "ong")
+                    .build();
+
+            String token = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+
+            return ResponseApi.success("Success", new ResponseLoginDTO(token, Role.ong));
         }
         User user = userOptional.get();
 
@@ -50,6 +76,6 @@ public class AuthService {
 
         String token = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
-        return ResponseApi.success("Success",new ResponseLoginDTO(token));
+        return ResponseApi.success("Success",new ResponseLoginDTO(token, user.getRole()));
     }
 }

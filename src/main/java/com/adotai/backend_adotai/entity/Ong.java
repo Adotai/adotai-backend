@@ -35,9 +35,10 @@ public class Ong {
     @OneToMany(mappedBy = "ong", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OngPhotos> photos;
 
-    public Ong(String name, String phone, String cnpj, String email, String password, String socialStatute, String boardMeeting, Address address, boolean status, List<OngPhotos> photos) {
+    public Ong(String name, String phone,String pix ,String cnpj, String email, String password, String socialStatute, String boardMeeting, Address address, boolean status, List<OngPhotos> photos) {
         this.name = name;
         this.phone = phone;
+        this.pix = pix;
         this.cnpj = cnpj;
         this.email = email;
         this.password = password;

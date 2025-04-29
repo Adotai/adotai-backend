@@ -26,6 +26,7 @@ public class OngMapper {
         Ong ong = new Ong(
                 dto.name(),
                 ValidationUtils.formatStrNumber(dto.phone()),
+                dto.pix(),
                 ValidationUtils.formatStrNumber(dto.cnpj()),
                 dto.email(),
                 encondedPassword,
