@@ -1,0 +1,5 @@
+CREATE TABLE species (
+    id SERIAL PRIMARY KEY,
+    description VARCHAR(100) UNIQUE NOT NULL,
+    status BOOLEAN NOT NULL DEFAULT TRUE
+);
