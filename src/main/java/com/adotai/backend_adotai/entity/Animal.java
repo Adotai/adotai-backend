@@ -58,7 +58,7 @@ public class Animal {
 
     public Animal(Ong ong, String name, Gender gender, Color color, Breed breed, Specie species, Integer age, HealthStatus health,
                   boolean status, boolean vaccinated, boolean neutered, boolean dewormed, Temperament temperament,
-                  Timestamp createdAt, Timestamp updatedAt) {
+                  Timestamp createdAt) {
         this.ong = ong;
         this.name = name;
         this.gender = gender;
@@ -73,7 +73,6 @@ public class Animal {
         this.dewormed = dewormed;
         this.temperament = temperament;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public int getId() {
@@ -194,10 +193,6 @@ public class Animal {
 
     public Timestamp getUpdatedAt() {
         return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     @Override

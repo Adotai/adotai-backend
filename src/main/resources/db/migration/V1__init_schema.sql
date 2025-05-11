@@ -125,14 +125,14 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trigger_update_animals
 BEFORE UPDATE ON animals
 FOR EACH ROW
-EXECUTE FUNCTION update_timestamp();
+EXECUTE PROCEDURE update_timestamp();
 
 CREATE TRIGGER trigger_update_users
 BEFORE UPDATE ON users
 FOR EACH ROW
-EXECUTE FUNCTION update_timestamp();
+EXECUTE PROCEDURE update_timestamp();
 
 CREATE TRIGGER trigger_update_ongs
 BEFORE UPDATE ON ongs
 FOR EACH ROW
-EXECUTE FUNCTION update_timestamp();
+EXECUTE PROCEDURE update_timestamp();
