@@ -38,4 +38,10 @@ public class OngController {
         ResponseApi response = ongService.delete(id);
         return ResponseEntity.status(response.status()).body(response);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseApi> updateStatusById(@PathVariable int id){
+        ResponseApi response = ongService.updateStatusById(id);
+        return ResponseEntity.status(response.status()).body(response);
+    }
 }

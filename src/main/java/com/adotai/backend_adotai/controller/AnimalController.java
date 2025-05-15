@@ -5,10 +5,7 @@ import com.adotai.backend_adotai.dto.Api.ResponseApi;
 import com.adotai.backend_adotai.service.AnimalService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/animal")
@@ -31,4 +28,9 @@ public class AnimalController {
         return ResponseEntity.status(response.status()).body(response);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseApi> deleteById(@PathVariable int id){
+        ResponseApi response = animalService.deleteById(id);
+        return ResponseEntity.status(response.status()).body(response);
+    }
 }

@@ -113,4 +113,12 @@ public class OngService {
             return ResponseApi.error(500,"Error: " + e.getMessage());
         }
     }
+
+    public ResponseApi<?> updateStatusById(int id){
+        int rowsAffected = ongRepository.toggleStatusById(id);
+        if (rowsAffected == 0){
+            return ResponseApi.error(404,"Not Found");
+        }
+        return ResponseApi.success("Success",null);
+    }
 }
