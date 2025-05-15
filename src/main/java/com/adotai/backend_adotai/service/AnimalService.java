@@ -3,8 +3,10 @@ package com.adotai.backend_adotai.service;
 import com.adotai.backend_adotai.dto.Animal.Request.RequestAnimalDto;
 import com.adotai.backend_adotai.dto.Animal.Response.ResponseAnimalDto;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
+import com.adotai.backend_adotai.dto.Ong.Response.ResponseOngDTO;
 import com.adotai.backend_adotai.entity.*;
 import com.adotai.backend_adotai.mapper.AnimalMapper;
+import com.adotai.backend_adotai.mapper.OngMapper;
 import com.adotai.backend_adotai.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -96,6 +98,22 @@ public class AnimalService {
                     Color newColor = new Color(name);
                     return colorRepository.save(newColor);
                 });
+    }
+
+    public ResponseApi deleteById(int id){
+        Optional<Animal> animal = animalRepository.findById(id);
+
+        if(animal.isEmpty())
+            return ResponseApi.error(404,"Ong not found.");
+
+        try{
+            animalRepository.deleteById(id);
+            ResponseAnimalDto dto = AnimalMapper.toDto(animal.get());
+
+            return ResponseApi.success("Success",dto);
+        } catch (Exception e) {
+            return ResponseApi.error(500,"Error: " + e.getMessage());
+        }
     }
 
 }
