@@ -1,10 +1,13 @@
 package com.adotai.backend_adotai.entity;
 
+import com.adotai.backend_adotai.entity.PhotosEntities.AnimalPhotos;
+import com.adotai.backend_adotai.entity.PhotosEntities.OngPhotos;
 import com.adotai.backend_adotai.entity.enum_types.Gender;
 import com.adotai.backend_adotai.entity.enum_types.HealthStatus;
 import com.adotai.backend_adotai.entity.enum_types.Temperament;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -54,11 +57,14 @@ public class Animal {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AnimalPhotos> photos;
+
     public Animal() {}
 
     public Animal(Ong ong, String name, Gender gender, Color color, Breed breed, Specie species, Integer age, HealthStatus health,
                   boolean status, boolean vaccinated, boolean neutered, boolean dewormed, Temperament temperament,
-                  Timestamp createdAt) {
+                  Timestamp createdAt, List<AnimalPhotos> photos) {
         this.ong = ong;
         this.name = name;
         this.gender = gender;
@@ -73,6 +79,7 @@ public class Animal {
         this.dewormed = dewormed;
         this.temperament = temperament;
         this.createdAt = createdAt;
+        this.photos = photos;
     }
 
     public int getId() {
@@ -195,6 +202,14 @@ public class Animal {
         return updatedAt;
     }
 
+    public List<AnimalPhotos> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<AnimalPhotos> photos) {
+        this.photos = photos;
+    }
+
     @Override
     public String toString() {
         return "Animal{" +
@@ -214,6 +229,7 @@ public class Animal {
                 ", temperament=" + temperament +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", photos=" + photos +
                 '}';
     }
 
@@ -222,11 +238,11 @@ public class Animal {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Animal animal = (Animal) o;
-        return id == animal.id && status == animal.status && vaccinated == animal.vaccinated && neutered == animal.neutered && dewormed == animal.dewormed && Objects.equals(ong, animal.ong) && Objects.equals(name, animal.name) && gender == animal.gender && Objects.equals(color, animal.color) && Objects.equals(breed, animal.breed) && Objects.equals(species, animal.species) && Objects.equals(age, animal.age) && health == animal.health && temperament == animal.temperament && Objects.equals(createdAt, animal.createdAt) && Objects.equals(updatedAt, animal.updatedAt);
+        return id == animal.id && status == animal.status && vaccinated == animal.vaccinated && neutered == animal.neutered && dewormed == animal.dewormed && Objects.equals(ong, animal.ong) && Objects.equals(name, animal.name) && gender == animal.gender && Objects.equals(color, animal.color) && Objects.equals(breed, animal.breed) && Objects.equals(species, animal.species) && Objects.equals(age, animal.age) && health == animal.health && temperament == animal.temperament && Objects.equals(createdAt, animal.createdAt) && Objects.equals(updatedAt, animal.updatedAt) && Objects.equals(photos, animal.photos);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ong, name, gender, color, breed, species, age, health, status, vaccinated, neutered, dewormed, temperament, createdAt, updatedAt);
+        return Objects.hash(id, ong, name, gender, color, breed, species, age, health, status, vaccinated, neutered, dewormed, temperament, createdAt, updatedAt , photos);
     }
 }

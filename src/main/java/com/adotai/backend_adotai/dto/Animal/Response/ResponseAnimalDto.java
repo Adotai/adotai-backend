@@ -1,10 +1,12 @@
 package com.adotai.backend_adotai.dto.Animal.Response;
 
+import com.adotai.backend_adotai.dto.Ong.Response.ResponseOngPhotosDTO;
 import com.adotai.backend_adotai.entity.enum_types.Gender;
 import com.adotai.backend_adotai.entity.enum_types.HealthStatus;
 import com.adotai.backend_adotai.entity.enum_types.Temperament;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public record ResponseAnimalDto(
         int id,
@@ -21,6 +23,7 @@ public record ResponseAnimalDto(
         boolean neutered,
         boolean dewormed,
         Temperament temperament,
-        Timestamp createdAt
+        Timestamp createdAt,
+        List<ResponseAnimalPhotosDTO> photos
 ) {
 }
