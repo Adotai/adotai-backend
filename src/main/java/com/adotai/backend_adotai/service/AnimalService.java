@@ -46,6 +46,10 @@ public class AnimalService {
             return ResponseApi.error(404, "ONG NOT FOUND");
         }
 
+        if (dto.photos() == null || dto.photos().isEmpty()) {
+            return ResponseApi.error(404, "Fotos faltando ou inválidas.");
+        }
+
         String specieDesc = dto.species().description().toUpperCase();
         String breedName = dto.breed().name().toUpperCase();
         String colorName = dto.color().name().toUpperCase();
