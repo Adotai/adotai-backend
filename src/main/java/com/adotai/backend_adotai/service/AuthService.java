@@ -42,6 +42,10 @@ public class AuthService {
             }
             Ong ong = ongOptional.get();
 
+            if(!ong.isStatus()){
+                return ResponseApi.error(401,"User don't have permission");
+            }
+
             if (!passwordEncoder.matches(dto.password(), ong.getPassword())) {
                 return ResponseApi.error(401, "Invalid login");
             }

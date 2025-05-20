@@ -5,6 +5,7 @@ import com.adotai.backend_adotai.dto.Animal.Response.ResponseAnimalDto;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
 import com.adotai.backend_adotai.dto.Ong.Response.ResponseOngDTO;
 import com.adotai.backend_adotai.entity.*;
+import com.adotai.backend_adotai.entity.enum_types.States;
 import com.adotai.backend_adotai.mapper.AnimalMapper;
 import com.adotai.backend_adotai.mapper.OngMapper;
 import com.adotai.backend_adotai.repository.*;
@@ -17,6 +18,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AnimalService {
@@ -118,6 +120,14 @@ public class AnimalService {
         } catch (Exception e) {
             return ResponseApi.error(500,"Error: " + e.getMessage());
         }
+    }
+
+    public ResponseApi findByState(String state){
+        List<Animal> animal = animalRepository.findByOngAddressState(States.valueOf(state.toUpperCase()));
+        if(animal.isEmpty())
+            return ResponseApi.error(404,"Animals from this state not found.");
+        List<ResponseAnimalDto> dto =  animal.stream().map(AnimalMapper::toDto).toList();
+        return ResponseApi.success("Success", dto);
     }
 
 }
