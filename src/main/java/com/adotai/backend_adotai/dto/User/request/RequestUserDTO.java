@@ -6,5 +6,6 @@ public record RequestUserDTO(String name,
                              String password,
                              String telephone,
                              String role,
-                             int addressId){}
+                             int addressId){
+}
 

@@ -13,6 +13,7 @@ public record RequestOngDTO(String name,
                             String pix,
                             Documents documents,
                             List<RequestOngPhotosDTO> photos,
+                            String description,
                             Integer addressId,
                             boolean status) {
 }

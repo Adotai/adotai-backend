@@ -24,6 +24,7 @@ public record ResponseAnimalDto(
         boolean dewormed,
         Temperament temperament,
         Timestamp createdAt,
-        List<ResponseAnimalPhotosDTO> photos
+        List<ResponseAnimalPhotosDTO> photos,
+        String animalDescription
 ) {
 }

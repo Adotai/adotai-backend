@@ -22,7 +22,8 @@ public record RequestAnimalDto(
         Boolean neutered,
         Boolean dewormed,
         Temperament temperament,
-        List<RequestAnimalPhotosDTO> photos
+        List<RequestAnimalPhotosDTO> photos,
+        String animalDescription
 ) {
     public record ColorInfo(String name) {}
     public record BreedInfo(String name, String speciesDescription) {}

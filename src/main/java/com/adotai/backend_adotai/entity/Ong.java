@@ -27,6 +27,11 @@ public class Ong {
     @Column(name = "board_meeting")
     private String boardMeeting;
 
+    @Column(name = "description")
+    private String description;
+
+
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
@@ -35,7 +40,7 @@ public class Ong {
     @OneToMany(mappedBy = "ong", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OngPhotos> photos;
 
-    public Ong(String name, String phone,String pix ,String cnpj, String email, String password, String socialStatute, String boardMeeting, Address address, boolean status, List<OngPhotos> photos) {
+    public Ong(String name, String phone,String pix ,String cnpj, String email, String password, String socialStatute, String boardMeeting, Address address, boolean status, String description,List<OngPhotos> photos) {
         this.name = name;
         this.phone = phone;
         this.pix = pix;
@@ -47,9 +52,18 @@ public class Ong {
         this.address = address;
         this.status = status;
         this.photos = photos;
+        this.description = description;
     }
 
     public Ong() {}
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public List<OngPhotos> getPhotos() {
         return photos;
@@ -157,6 +171,7 @@ public class Ong {
                 ", address=" + address +
                 ", status=" + status +
                 ", photos=" + photos +
+                ", description='" + description + '\'' +
                 '}';
     }
 
@@ -165,11 +180,11 @@ public class Ong {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ong ong = (Ong) o;
-        return id == ong.id && status == ong.status && Objects.equals(name, ong.name) && Objects.equals(phone, ong.phone) && Objects.equals(cnpj, ong.cnpj) && Objects.equals(email, ong.email) && Objects.equals(password, ong.password) && Objects.equals(socialStatute, ong.socialStatute) && Objects.equals(boardMeeting, ong.boardMeeting) && Objects.equals(address, ong.address) && Objects.equals(photos, ong.photos);
+        return id == ong.id && status == ong.status && Objects.equals(name, ong.name) && Objects.equals(phone, ong.phone) && Objects.equals(cnpj, ong.cnpj) && Objects.equals(email, ong.email) && Objects.equals(password, ong.password) && Objects.equals(socialStatute, ong.socialStatute) && Objects.equals(boardMeeting, ong.boardMeeting) && Objects.equals(address, ong.address) && Objects.equals(photos, ong.photos)  && Objects.equals(description, ong.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, phone, cnpj, email, password, socialStatute, boardMeeting, address, status, photos);
+        return Objects.hash(id, name, phone, cnpj, email, password, socialStatute, boardMeeting, address, status, photos, description);
     }
 }

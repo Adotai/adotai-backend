@@ -34,7 +34,9 @@ public class OngMapper {
                 dto.documents().getBoardMeeting(),
                 address,
                 dto.status(),
+                dto.description(),
                 photos
+
         );
 
         photos.forEach(photo -> photo.setOng(ong));
@@ -61,6 +63,7 @@ public class OngMapper {
                 documents,
                 addressDto,
                 photosDto,
+                ong.getDescription(),
                 ong.isStatus());
     }
 }

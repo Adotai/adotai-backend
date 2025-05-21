@@ -26,6 +26,9 @@ public class Animal {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Column(name = "animal_description")
+    private String animalDescription;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "color_id", nullable = false)
     private Color color;
@@ -64,7 +67,7 @@ public class Animal {
 
     public Animal(Ong ong, String name, Gender gender, Color color, Breed breed, Specie species, Integer age, HealthStatus health,
                   boolean status, boolean vaccinated, boolean neutered, boolean dewormed, Temperament temperament,
-                  Timestamp createdAt, List<AnimalPhotos> photos) {
+                  Timestamp createdAt, List<AnimalPhotos> photos, String animalDescription) {
         this.ong = ong;
         this.name = name;
         this.gender = gender;
@@ -80,10 +83,19 @@ public class Animal {
         this.temperament = temperament;
         this.createdAt = createdAt;
         this.photos = photos;
+        this.animalDescription = animalDescription;
     }
 
     public int getId() {
         return id;
+    }
+
+    public String getAnimalDescription() {
+        return animalDescription;
+    }
+
+    public void setAnimalDescription(String animalDescription) {
+        this.animalDescription = animalDescription;
     }
 
     public Ong getOng() {
@@ -230,6 +242,7 @@ public class Animal {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", photos=" + photos +
+                ", animalDescription='" + animalDescription + '\'' +
                 '}';
     }
 
@@ -238,11 +251,11 @@ public class Animal {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Animal animal = (Animal) o;
-        return id == animal.id && status == animal.status && vaccinated == animal.vaccinated && neutered == animal.neutered && dewormed == animal.dewormed && Objects.equals(ong, animal.ong) && Objects.equals(name, animal.name) && gender == animal.gender && Objects.equals(color, animal.color) && Objects.equals(breed, animal.breed) && Objects.equals(species, animal.species) && Objects.equals(age, animal.age) && health == animal.health && temperament == animal.temperament && Objects.equals(createdAt, animal.createdAt) && Objects.equals(updatedAt, animal.updatedAt) && Objects.equals(photos, animal.photos);
+        return id == animal.id && status == animal.status && vaccinated == animal.vaccinated && neutered == animal.neutered && dewormed == animal.dewormed && Objects.equals(ong, animal.ong) && Objects.equals(name, animal.name) && gender == animal.gender && Objects.equals(color, animal.color) && Objects.equals(breed, animal.breed) && Objects.equals(species, animal.species) && Objects.equals(age, animal.age) && health == animal.health && temperament == animal.temperament && Objects.equals(createdAt, animal.createdAt) && Objects.equals(updatedAt, animal.updatedAt) && Objects.equals(photos, animal.photos) && Objects.equals(animalDescription, animal.animalDescription);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ong, name, gender, color, breed, species, age, health, status, vaccinated, neutered, dewormed, temperament, createdAt, updatedAt , photos);
+        return Objects.hash(id, ong, name, gender, color, breed, species, age, health, status, vaccinated, neutered, dewormed, temperament, createdAt, updatedAt , photos, animalDescription);
     }
 }

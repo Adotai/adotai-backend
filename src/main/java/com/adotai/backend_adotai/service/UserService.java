@@ -39,7 +39,7 @@ public class UserService {
             return ResponseApi.error(400, "Invalid or empty phone number");
         }
 
-        if ((!ValidationUtils.isValidEmail(dto.email()))||(userRepository.existsByEmail(dto.email()))){
+        if ((!ValidationUtils.isValidEmail(dto.email()))||(userRepository.existsByEmailIgnoreCase(dto.email()))){
             return ResponseApi.error(400,"Email invalid or already exists");
         }
         Optional<Address> address = addressRepository.findById(dto.addressId());

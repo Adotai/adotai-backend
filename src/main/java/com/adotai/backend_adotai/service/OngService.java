@@ -42,8 +42,8 @@ public class OngService {
            return ResponseApi.error(404,"Missing or invalid phone number.");
        }
 
-       if(!ValidationUtils.isValidEmail(dto.email())){
-           return ResponseApi.error(404,"Missing or invalid email.");
+       if(!ValidationUtils.isValidEmail(dto.email()) || (ongRepository.existsByEmailIgnoreCase(dto.email()))){
+           return ResponseApi.error(404,"Email inválido ou Inexistente.");
        }
 
        Optional<Address> address = addressRepository.findById(dto.addressId());

@@ -33,10 +33,10 @@ public class AuthService {
     }
 
     public ResponseApi login(RequestLoginDTO dto) {
-        Optional<User> userOptional = userRepository.findByEmail(dto.email());
+        Optional<User> userOptional = userRepository.findByEmailIgnoreCase(dto.email());
 
         if (userOptional.isEmpty()) {
-            Optional<Ong> ongOptional = ongRepository.findByEmail(dto.email());
+            Optional<Ong> ongOptional = ongRepository.findByEmailIgnoreCase(dto.email());
             if(ongOptional.isEmpty()){
                 return ResponseApi.error(401,"User not found");
             }

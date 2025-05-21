@@ -35,7 +35,8 @@ public static Animal toEntity(RequestAnimalDto dto, Ong ong, Color color, Breed 
             dto.dewormed(),
             dto.temperament(),
             createdAt,
-            photos
+            photos,
+            dto.animalDescription()
     );
 
     photos.forEach(photo -> photo.setAnimal(animal));
@@ -65,7 +66,8 @@ public static ResponseAnimalDto toDto(Animal animal) {
             animal.isDewormed(),
             animal.getTemperament(),
             animal.getCreatedAt(),
-            photosDto
+            photosDto,
+            animal.getAnimalDescription()
     );
 }
 }
