@@ -15,9 +15,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE UPPER(u.email) = UPPER(:email)")
     Optional<User> findByEmailIgnoreCase(@Param("email") String email);
 
-    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE UPPER(u.email) = UPPER(:email)")
-    Boolean existsByEmailIgnoreCase(@Param("email") String email);
-
-
-    Optional<User> findById(int id);
+    Boolean existsByEmailIgnoreCase(String email);
 }
