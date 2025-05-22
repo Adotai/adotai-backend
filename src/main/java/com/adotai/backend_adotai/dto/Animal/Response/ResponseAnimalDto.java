@@ -3,6 +3,7 @@ package com.adotai.backend_adotai.dto.Animal.Response;
 import com.adotai.backend_adotai.dto.Ong.Response.ResponseOngPhotosDTO;
 import com.adotai.backend_adotai.entity.enum_types.Gender;
 import com.adotai.backend_adotai.entity.enum_types.HealthStatus;
+import com.adotai.backend_adotai.entity.enum_types.Size;
 import com.adotai.backend_adotai.entity.enum_types.Temperament;
 
 import java.sql.Timestamp;
@@ -17,6 +18,7 @@ public record ResponseAnimalDto(
         String breed,
         String species,
         Integer age,
+        Size size,
         HealthStatus health,
         boolean status,
         boolean vaccinated,

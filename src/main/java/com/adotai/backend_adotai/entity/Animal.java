@@ -4,6 +4,7 @@ import com.adotai.backend_adotai.entity.PhotosEntities.AnimalPhotos;
 import com.adotai.backend_adotai.entity.PhotosEntities.OngPhotos;
 import com.adotai.backend_adotai.entity.enum_types.Gender;
 import com.adotai.backend_adotai.entity.enum_types.HealthStatus;
+import com.adotai.backend_adotai.entity.enum_types.Size;
 import com.adotai.backend_adotai.entity.enum_types.Temperament;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
@@ -54,6 +55,9 @@ public class Animal {
     @Enumerated(EnumType.STRING)
     private Temperament temperament;
 
+    @Enumerated(EnumType.STRING)
+    private Size size;
+
     @Column(name = "created_at")
     private Timestamp createdAt;
 
@@ -65,7 +69,7 @@ public class Animal {
 
     public Animal() {}
 
-    public Animal(Ong ong, String name, Gender gender, Color color, Breed breed, Specie species, Integer age, HealthStatus health,
+    public Animal(Ong ong, String name, Gender gender, Color color, Breed breed, Specie species, Integer age,Size size, HealthStatus health,
                   boolean status, boolean vaccinated, boolean neutered, boolean dewormed, Temperament temperament,
                   Timestamp createdAt, List<AnimalPhotos> photos, String animalDescription) {
         this.ong = ong;
@@ -75,6 +79,7 @@ public class Animal {
         this.breed = breed;
         this.species = species;
         this.age = age;
+        this.size = size;
         this.health = health;
         this.status = status;
         this.vaccinated = vaccinated;
@@ -88,6 +93,14 @@ public class Animal {
 
     public int getId() {
         return id;
+    }
+
+    public Size getSize() {
+        return size;
+    }
+
+    public void setSize(Size size) {
+        this.size = size;
     }
 
     public String getAnimalDescription() {
