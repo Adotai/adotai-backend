@@ -1,5 +1,6 @@
 package com.adotai.backend_adotai.service;
 
+import com.adotai.backend_adotai.dto.Address.UpdateAddressDto;
 import com.adotai.backend_adotai.dto.Address.request.RequestAddressDTO;
 import com.adotai.backend_adotai.dto.Address.response.ResponseAddressDTO;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
@@ -38,6 +39,36 @@ public class AddressService {
            return ResponseApi.error(500,e.getMessage());
         }
     }
+
+    public ResponseApi<ResponseAddressDTO> update(UpdateAddressDto dto) {
+        if (dto == null) {
+            return ResponseApi.error(400, "Address is null");
+        }
+
+        Optional<Address> addressOpt = addressRepository.findById(dto.id());
+        if (addressOpt.isEmpty()) {
+            return ResponseApi.error(404, "Address not found");
+        }
+
+        if (!ValidationUtils.isValidCep(dto.zipCode())) {
+            return ResponseApi.error(400, "Invalid Zip Code");
+        }
+
+        Address existingAddress = addressOpt.get();
+        existingAddress.setStreet(dto.street());
+        existingAddress.setNumber(dto.number());
+        existingAddress.setCity(dto.city());
+        existingAddress.setState(dto.state());
+        existingAddress.setZipCode(dto.zipCode());
+
+        try {
+            Address updatedAddress = addressRepository.save(existingAddress);
+            return ResponseApi.success("Success", AddressMapper.toDto(updatedAddress));
+        } catch (Exception e) {
+            return ResponseApi.error(500, "Error updating address: " + e.getMessage());
+        }
+    }
+
 
     public ResponseApi<List<ResponseAddressDTO>> findAll(){
         List<Address> addresses = addressRepository.findAll();

@@ -1,6 +1,7 @@
 package com.adotai.backend_adotai.controller;
 
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
+import com.adotai.backend_adotai.dto.User.UpdateUserDto;
 import com.adotai.backend_adotai.dto.User.request.RequestUserDTO;
 import com.adotai.backend_adotai.dto.User.response.ResponseUserDTO;
 import com.adotai.backend_adotai.service.UserService;
@@ -23,6 +24,12 @@ public class UserController {
     @PostMapping
     public ResponseEntity<ResponseApi> create(@RequestBody RequestUserDTO dto) {
         ResponseApi response = userService.create(dto);
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
+    @PutMapping
+    public ResponseEntity<ResponseApi> updateUser(@RequestBody UpdateUserDto dto) {
+        ResponseApi response = userService.updateUser(dto);
         return ResponseEntity.status(response.status()).body(response);
     }
 

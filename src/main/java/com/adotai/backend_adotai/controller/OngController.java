@@ -1,7 +1,10 @@
 package com.adotai.backend_adotai.controller;
 
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
+import com.adotai.backend_adotai.dto.Ong.DeleteOngPhotosDTO;
 import com.adotai.backend_adotai.dto.Ong.Request.RequestOngDTO;
+import com.adotai.backend_adotai.dto.Ong.UpdateOngDto;
+import com.adotai.backend_adotai.dto.User.UpdateUserDto;
 import com.adotai.backend_adotai.service.OngService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,18 @@ public class OngController {
     @PostMapping
     public ResponseEntity<ResponseApi> create(@RequestBody RequestOngDTO dto){
         ResponseApi response = ongService.create(dto);
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
+    @PutMapping
+    public ResponseEntity<ResponseApi> updateOng(@RequestBody UpdateOngDto dto) {
+        ResponseApi response = ongService.updateOng(dto);
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
+    @PostMapping("/delete-photos")
+    public ResponseEntity<ResponseApi<String>> deletePhotos(@RequestBody DeleteOngPhotosDTO dto) {
+        ResponseApi<String> response = ongService.deleteOngPhotos(dto.ongId(), dto.photoIdsToDelete());
         return ResponseEntity.status(response.status()).body(response);
     }
 
