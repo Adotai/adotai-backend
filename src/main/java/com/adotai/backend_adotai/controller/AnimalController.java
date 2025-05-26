@@ -39,4 +39,11 @@ public class AnimalController {
         ResponseApi response = animalService.deleteById(id);
         return ResponseEntity.status(response.status()).body(response);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseApi> update(@PathVariable int id, @RequestBody RequestAnimalDto dto) {
+        ResponseApi response = animalService.update(id, dto);
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
 }
