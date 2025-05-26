@@ -14,6 +14,8 @@ public interface OngRepository extends JpaRepository<Ong,Integer> {
     @Query("SELECT o FROM Ong o WHERE UPPER(o.email) = UPPER(:email)")
     Optional<Ong> findByEmailIgnoreCase(@Param("email") String email);
 
+    Boolean existsByCnpj(String cnpj);
+
     @Query("SELECT CASE WHEN COUNT(o) > 0 THEN true ELSE false END FROM Ong o WHERE UPPER(o.email) = UPPER(:email)")
     Boolean existsByEmailIgnoreCase(@Param("email") String email);
     @Modifying

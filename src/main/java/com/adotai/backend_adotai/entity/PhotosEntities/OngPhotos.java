@@ -28,11 +28,15 @@ public class OngPhotos {
         this.photoUrl = photoUrl;
         }
 
+    public OngPhotos(Integer id, String photoUrl) {
+        this.id = id;
+        this.photoUrl = photoUrl;
+    }
+
     public OngPhotos(Ong ong, String photoUrl) {
         this.ong = ong;
         this.photoUrl = photoUrl;
     }
-
 
     public Integer getId() {return id;}
     public Ong getOng() {return ong;}
