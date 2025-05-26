@@ -1,13 +1,16 @@
 package com.adotai.backend_adotai.service;
 
 import com.adotai.backend_adotai.dto.Animal.Request.RequestAnimalDto;
+import com.adotai.backend_adotai.dto.Animal.Request.RequestAnimalPhotosDTO;
 import com.adotai.backend_adotai.dto.Animal.Response.ResponseAnimalDto;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
 import com.adotai.backend_adotai.dto.Ong.Response.ResponseOngDTO;
 import com.adotai.backend_adotai.entity.*;
+import com.adotai.backend_adotai.entity.PhotosEntities.AnimalPhotos;
 import com.adotai.backend_adotai.entity.enum_types.States;
 import com.adotai.backend_adotai.mapper.AnimalMapper;
 import com.adotai.backend_adotai.mapper.OngMapper;
+import com.adotai.backend_adotai.mapper.PhotosMapper.AnimalPhotosMapper;
 import com.adotai.backend_adotai.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -41,6 +44,7 @@ public class AnimalService {
         this.specieRepository = specieRepository;
     }
 
+    @Transactional
     public ResponseApi<?> save(RequestAnimalDto dto) {
 
         Optional<Ong> ong = ongRepository.findById(dto.ongId());
@@ -82,6 +86,55 @@ public class AnimalService {
         return AnimalMapper.toDto(animal);
     }
 
+    @Transactional
+    public ResponseApi update(int id, RequestAnimalDto dto) {
+        Animal animal = animalRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Animal not found with id: " + id));
+
+        Ong ong = ongRepository.findById(dto.ongId())
+                .orElseThrow(() -> new EntityNotFoundException("ONG not found with id: " + dto.ongId()));
+
+        Specie specie = getOrCreateSpecie(dto.species().description().toUpperCase());
+        Breed breed = getOrCreateBreed(dto.breed().name().toUpperCase(), specie);
+        Color color = getOrCreateColor(dto.color().name().toUpperCase());
+
+        animal.setOng(ong);
+        animal.setName(dto.name());
+        animal.setGender(dto.gender());
+        animal.setColor(color);
+        animal.setBreed(breed);
+        animal.setSpecies(specie);
+        animal.setAge(dto.age());
+        animal.setSize(dto.size());
+        animal.setHealth(dto.health());
+        animal.setStatus(dto.status());
+        animal.setVaccinated(dto.vaccinated());
+        animal.setNeutered(dto.neutered());
+        animal.setDewormed(dto.dewormed());
+        animal.setTemperament(dto.temperament());
+        animal.setAnimalDescription(dto.animalDescription());
+
+        List<AnimalPhotos> existingPhotos = animal.getPhotos();
+
+        for (RequestAnimalPhotosDTO photoDTO : dto.photos()) {
+            if (photoDTO.getId() != null) {
+                existingPhotos.stream()
+                        .filter(p -> p.getId() == photoDTO.getId())
+                        .findFirst()
+                        .ifPresent(p -> p.setPhotoUrl(photoDTO.getPhotoUrl()));
+            } else {
+                AnimalPhotos newPhoto = new AnimalPhotos();
+                newPhoto.setAnimal(animal);
+                newPhoto.setPhotoUrl(photoDTO.getPhotoUrl());
+                existingPhotos.add(newPhoto);
+            }
+        }
+
+        animalRepository.save(animal);
+
+        return ResponseApi.success("Animal updated successfully", AnimalMapper.toDto(animal));
+    }
+
     private Specie getOrCreateSpecie(String description) {
         return specieRepository.findByDescription(description)
                 .orElseGet(() -> {
@@ -106,6 +159,7 @@ public class AnimalService {
                 });
     }
 
+    @Transactional
     public ResponseApi deleteById(int id){
         Optional<Animal> animal = animalRepository.findById(id);
 
