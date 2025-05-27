@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -22,32 +22,32 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseApi> create(@RequestBody RequestUserDTO dto) {
-        ResponseApi response = userService.create(dto);
+    public ResponseEntity<ResponseApi<?>> create(@RequestBody RequestUserDTO dto) {
+        ResponseApi<?> response = userService.create(dto);
         return ResponseEntity.status(response.status()).body(response);
     }
 
     @PutMapping
-    public ResponseEntity<ResponseApi> updateUser(@RequestBody UpdateUserDto dto) {
-        ResponseApi response = userService.updateUser(dto);
+    public ResponseEntity<ResponseApi<?>> updateUser(@RequestBody UpdateUserDto dto) {
+        ResponseApi<?> response = userService.updateUser(dto);
         return ResponseEntity.status(response.status()).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<ResponseApi> getAll(){
-        ResponseApi response = userService.getUsers();
+    public ResponseEntity<ResponseApi<?>> getAll(){
+        ResponseApi<?> response = userService.getUsers();
         return ResponseEntity.status(response.status()).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseApi> getById(@PathVariable int id){
-        ResponseApi response = userService.getUserById(id);
+    public ResponseEntity<ResponseApi<?>> getById(@PathVariable int id){
+        ResponseApi<?> response = userService.getUserById(id);
         return ResponseEntity.status(response.status()).body(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseApi> delete(@PathVariable int id){
-        ResponseApi response = userService.deleteUser(id);
+    public ResponseEntity<ResponseApi<?>> delete(@PathVariable int id){
+        ResponseApi<?> response = userService.deleteUser(id);
         return ResponseEntity.status(response.status()).body(response);
     }
 }

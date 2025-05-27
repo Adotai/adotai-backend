@@ -18,8 +18,8 @@ public class AuthController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseApi> login(@RequestBody RequestLoginDTO dto) {
-        ResponseApi response = authService.login(dto);
+    public ResponseEntity<ResponseApi<?>> login(@RequestBody RequestLoginDTO dto) {
+        ResponseApi<?> response = authService.login(dto);
         return ResponseEntity.status(response.status()).body(response);
     }
 }
