@@ -4,24 +4,20 @@ import com.adotai.backend_adotai.dto.Animal.Request.RequestAnimalDto;
 import com.adotai.backend_adotai.dto.Animal.Request.RequestAnimalPhotosDTO;
 import com.adotai.backend_adotai.dto.Animal.Response.ResponseAnimalDto;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
-import com.adotai.backend_adotai.dto.Ong.Response.ResponseOngDTO;
 import com.adotai.backend_adotai.entity.*;
 import com.adotai.backend_adotai.entity.PhotosEntities.AnimalPhotos;
 import com.adotai.backend_adotai.entity.enum_types.States;
 import com.adotai.backend_adotai.mapper.AnimalMapper;
-import com.adotai.backend_adotai.mapper.OngMapper;
-import com.adotai.backend_adotai.mapper.PhotosMapper.AnimalPhotosMapper;
 import com.adotai.backend_adotai.repository.*;
+import com.adotai.backend_adotai.repository.PhotosRepository.AnimalPhotosRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AnimalService {
@@ -31,17 +27,20 @@ public class AnimalService {
     private final ColorRepository colorRepository;
     private final BreedRepository breedRepository;
     private final SpecieRepository specieRepository;
+    private final AnimalPhotosRepository animalPhotosRepository;
 
     public AnimalService(AnimalRepository animalRepository,
                          OngRepository ongRepository,
                          ColorRepository colorRepository,
                          BreedRepository breedRepository,
-                         SpecieRepository specieRepository) {
+                         SpecieRepository specieRepository,
+                         AnimalPhotosRepository animalPhotosRepository) {
         this.animalRepository = animalRepository;
         this.ongRepository = ongRepository;
         this.colorRepository = colorRepository;
         this.breedRepository = breedRepository;
         this.specieRepository = specieRepository;
+        this.animalPhotosRepository = animalPhotosRepository;
     }
 
     @Transactional
@@ -72,7 +71,7 @@ public class AnimalService {
         return ResponseApi.success("Animal created successfully", AnimalMapper.toDto(animal));
     }
 
-    public ResponseApi findAll() {
+    public ResponseApi<?> findAll() {
         List<ResponseAnimalDto> dtos = animalRepository.findAll().stream()
                 .map(AnimalMapper::toDto)
                 .toList();
@@ -87,7 +86,7 @@ public class AnimalService {
     }
 
     @Transactional
-    public ResponseApi update(int id, RequestAnimalDto dto) {
+    public ResponseApi<?> update(int id, RequestAnimalDto dto) {
         Animal animal = animalRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Animal not found with id: " + id));
 
@@ -160,7 +159,7 @@ public class AnimalService {
     }
 
     @Transactional
-    public ResponseApi deleteById(int id){
+    public ResponseApi<?> deleteById(int id){
         Optional<Animal> animal = animalRepository.findById(id);
 
         if(animal.isEmpty())
@@ -176,7 +175,7 @@ public class AnimalService {
         }
     }
 
-    public ResponseApi findByState(String state){
+    public ResponseApi<?> findByState(String state){
         List<Animal> animal = animalRepository.findByOngAddressState(States.valueOf(state.toUpperCase()));
         if(animal.isEmpty())
             return ResponseApi.error(404,"Animals from this state not found.");
@@ -184,4 +183,31 @@ public class AnimalService {
         return ResponseApi.success("Success", dto);
     }
 
+    public ResponseApi<?> findByOngId(int id){
+        List<Animal> animals = animalRepository.findByOngId(id);
+
+        List<ResponseAnimalDto> dto = animals.stream().map(AnimalMapper :: toDto).toList();
+        return ResponseApi.success("Success",dto);
+    }
+
+    public ResponseApi<?> updateStatusById(int id){
+        int rowsAffected = animalRepository.toggleStatusById(id);
+        if (rowsAffected == 0){
+            return ResponseApi.error(404,"Not Found");
+        }
+        return ResponseApi.success("Success",null);
+    }
+
+    @Transactional
+    public ResponseApi<?> deleteAnimalPhoto(int animalId, int photoId) {
+        Optional<AnimalPhotos> photo = animalPhotosRepository.findByIdAndAnimalId(photoId, animalId);
+
+        if (photo.isEmpty()) {
+            return ResponseApi.error(404, "Foto não encontrada para este animal.");
+        }
+
+        animalPhotosRepository.deleteByIdAndAnimalId(photoId, animalId);
+
+        return ResponseApi.success("Foto deletada com sucesso", null);
+    }
 }

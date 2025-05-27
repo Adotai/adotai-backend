@@ -11,6 +11,7 @@ import com.adotai.backend_adotai.dto.Ong.UpdateOngPhotosDTO;
 import com.adotai.backend_adotai.entity.Address;
 import com.adotai.backend_adotai.entity.Ong;
 import com.adotai.backend_adotai.entity.PhotosEntities.OngPhotos;
+import com.adotai.backend_adotai.entity.enum_types.States;
 import com.adotai.backend_adotai.mapper.AddressMapper;
 import com.adotai.backend_adotai.mapper.OngMapper;
 import com.adotai.backend_adotai.mapper.PhotosMapper.OngPhotosMapper;
@@ -186,8 +187,6 @@ public class OngService {
         }
     }
 
-
-
     public ResponseApi<String> deleteOngPhotos(Integer ongId, List<Integer> photoIdsToDelete) {
         if (photoIdsToDelete == null || photoIdsToDelete.isEmpty()) {
             return ResponseApi.error(400, "Nenhuma foto selecionada para exclusão.");
@@ -226,7 +225,6 @@ public class OngService {
         return ResponseApi.success("Fotos excluídas com sucesso.", null);
     }
 
-
     public ResponseApi<List<ResponseOngDTO>> findAll(){
         List<Ong> ongs = ongRepository.findAll();
         List<ResponseOngDTO> ongDto = ongs.stream().map(OngMapper::toDto).toList();
@@ -241,6 +239,13 @@ public class OngService {
 
         ResponseOngDTO dto = OngMapper.toDto(ong.get());
         return ResponseApi.success("Success",dto);
+    }
+
+    public ResponseApi<?> findByState(String state){
+        List<Ong> ongs = ongRepository.findByAddressState(States.valueOf(state.toUpperCase()));
+
+        List<ResponseOngDTO> dto = ongs.stream().map(OngMapper :: toDto).toList();
+        return ResponseApi.success("Success", dto);
     }
 
     public ResponseApi<ResponseOngDTO> delete(int id){

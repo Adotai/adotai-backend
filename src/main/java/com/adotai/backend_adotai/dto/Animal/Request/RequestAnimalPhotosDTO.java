@@ -2,7 +2,7 @@ package com.adotai.backend_adotai.dto.Animal.Request;
 
 public class RequestAnimalPhotosDTO {
 
-    private Integer id; // adicione este campo
+    private Integer id;
     private String photoUrl;
 
     public RequestAnimalPhotosDTO() {}

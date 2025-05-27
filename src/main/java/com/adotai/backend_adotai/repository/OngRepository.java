@@ -1,12 +1,15 @@
 package com.adotai.backend_adotai.repository;
 
 import com.adotai.backend_adotai.entity.Ong;
+import com.adotai.backend_adotai.entity.enum_types.States;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.swing.plaf.nimbus.State;
+import java.util.List;
 import java.util.Optional;
 
 public interface OngRepository extends JpaRepository<Ong,Integer> {
@@ -22,4 +25,6 @@ public interface OngRepository extends JpaRepository<Ong,Integer> {
     @Transactional
     @Query("UPDATE Ong o SET o.status = CASE WHEN o.status = TRUE THEN FALSE ELSE TRUE END WHERE o.id = :id")
     int toggleStatusById(@Param("id") int id);
+
+    List<Ong> findByAddressState(States state);
 }
