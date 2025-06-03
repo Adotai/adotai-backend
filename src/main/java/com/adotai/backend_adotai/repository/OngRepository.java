@@ -27,4 +27,6 @@ public interface OngRepository extends JpaRepository<Ong,Integer> {
     int toggleStatusById(@Param("id") int id);
 
     List<Ong> findByAddressState(States state);
+
+    Optional<Ong> findByCnpj(String cnpj);
 }

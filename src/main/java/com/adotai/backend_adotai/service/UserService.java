@@ -89,7 +89,10 @@ public class UserService {
         if(dto.cpf() != null && !dto.cpf().isBlank()){
             if(!ValidationUtils.isValidCpf(dto.cpf())){
                 return ResponseApi.error(400, "Invalid CPF");
-            } else if (userRepository.existsByCpf(ValidationUtils.formatStrNumber(dto.cpf()))) {
+            }
+           Optional<User> user = userRepository.findByCpf(ValidationUtils.formatStrNumber(dto.cpf()));
+
+            if (user.isPresent() && (user.get().getId() != dto.id())) {
                 return ResponseApi.error(400, "CPF already exists");
             } else {
                 existingUser.setCpf(ValidationUtils.formatStrNumber(dto.cpf()));

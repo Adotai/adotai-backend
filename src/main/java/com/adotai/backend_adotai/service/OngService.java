@@ -119,7 +119,11 @@ public class OngService {
         if (dto.cnpj() != null && !dto.cnpj().isBlank()) {
             if (!ValidationUtils.isValidCnpj(dto.cnpj())) {
                 return ResponseApi.error(400, "Invalid CNPJ");
-            } else if (ongRepository.existsByCnpj(ValidationUtils.formatStrNumber(dto.cnpj()))) {
+            }
+
+            Optional<Ong> ong = ongRepository.findByCnpj(ValidationUtils.formatStrNumber(dto.cnpj()));
+
+            if (ong.isPresent() && ong.get().getId() != dto.id()){
                 return ResponseApi.error(400, "CNPJ already exists");
             } else {
                 existingOng.setCnpj(ValidationUtils.formatStrNumber(dto.cnpj()));
