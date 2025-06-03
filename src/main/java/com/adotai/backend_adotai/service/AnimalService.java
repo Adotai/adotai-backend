@@ -72,7 +72,7 @@ public class AnimalService {
     }
 
     public ResponseApi<?> findAll() {
-        List<ResponseAnimalDto> dtos = animalRepository.findAll().stream()
+        List<ResponseAnimalDto> dtos = animalRepository.findAllByStatusTrue().stream()
                 .map(AnimalMapper::toDto)
                 .toList();
         return ResponseApi.success("Animal found", dtos);
@@ -176,7 +176,7 @@ public class AnimalService {
     }
 
     public ResponseApi<?> findByState(String state){
-        List<Animal> animal = animalRepository.findByOngAddressState(States.valueOf(state.toUpperCase()));
+        List<Animal> animal = animalRepository.findByOngAddressStateAndStatusTrue(States.valueOf(state.toUpperCase()));
         if(animal.isEmpty())
             return ResponseApi.error(404,"Animals from this state not found.");
         List<ResponseAnimalDto> dto =  animal.stream().map(AnimalMapper::toDto).toList();

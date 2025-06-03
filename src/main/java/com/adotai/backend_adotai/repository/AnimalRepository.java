@@ -12,11 +12,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AnimalRepository extends JpaRepository<Animal, Integer> {
-    List<Animal> findByOngAddressState(States state);
+    List<Animal> findByOngAddressStateAndStatusTrue(States state);
     List<Animal> findByOngId(int id);
 
     @Modifying
     @Transactional
     @Query("UPDATE Animal o SET o.status = CASE WHEN o.status = TRUE THEN FALSE ELSE TRUE END WHERE o.id = :id")
     int toggleStatusById(@Param("id") int id);
+
+
+    List<Animal> findAllByStatusTrue();
 }
