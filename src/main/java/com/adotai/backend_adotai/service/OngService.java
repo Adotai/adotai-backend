@@ -133,7 +133,11 @@ public class OngService {
         if (dto.email() != null && !dto.email().isBlank()) {
             if (!ValidationUtils.isValidEmail(dto.email())) {
                 return ResponseApi.error(400, "Invalid email");
-            } else if (ongRepository.existsByEmailIgnoreCase(dto.email())) {
+            }
+
+            Optional<Ong> ong = ongRepository.findByEmailIgnoreCase(dto.email());
+
+            if (ong.isPresent() && ong.get().getId() != dto.id()){
                 return ResponseApi.error(400, "Email already exists");
             } else {
                 existingOng.setEmail(dto.email());
