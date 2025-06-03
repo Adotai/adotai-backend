@@ -110,7 +110,11 @@ public class UserService {
         if (dto.email() != null && !dto.email().isBlank()) {
             if (!ValidationUtils.isValidEmail(dto.email())) {
                 return ResponseApi.error(400, "Invalid email");
-            } else if (!existingUser.getEmail().equalsIgnoreCase(dto.email()) && userRepository.existsByEmailIgnoreCase(dto.email())){
+            }
+
+            Optional<User> user = userRepository.findByEmailIgnoreCase(dto.email());
+
+            if (user.isPresent() && (user.get().getId() != dto.id())) {
                 return ResponseApi.error(400, "Email already exists");
             } else {
                 existingUser.setEmail(dto.email());
