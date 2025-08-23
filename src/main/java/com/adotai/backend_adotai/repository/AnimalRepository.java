@@ -19,4 +19,6 @@ public interface AnimalRepository extends JpaRepository<Animal, Integer> {
     @Transactional
     @Query("UPDATE Animal o SET o.status = CASE WHEN o.status = TRUE THEN FALSE ELSE TRUE END WHERE o.id = :id")
     int toggleStatusById(@Param("id") int id);
+
+    List<Animal> findByUserIsNotNullAndStatusFalse();
 }

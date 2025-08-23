@@ -25,7 +25,8 @@ public record RequestAnimalDto(
         Boolean dewormed,
         Temperament temperament,
         List<RequestAnimalPhotosDTO> photos,
-        String animalDescription
+        String animalDescription,
+        Integer userId
 ) {
     public record ColorInfo(String name) {}
     public record BreedInfo(String name, String speciesDescription) {}

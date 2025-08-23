@@ -67,11 +67,15 @@ public class Animal {
     @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AnimalPhotos> photos;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Animal() {}
 
     public Animal(Ong ong, String name, Gender gender, Color color, Breed breed, Specie species, Integer age,Size size, HealthStatus health,
                   boolean status, boolean vaccinated, boolean neutered, boolean dewormed, Temperament temperament,
-                  Timestamp createdAt, List<AnimalPhotos> photos, String animalDescription) {
+                  Timestamp createdAt, List<AnimalPhotos> photos, String animalDescription, User user) {
         this.ong = ong;
         this.name = name;
         this.gender = gender;
@@ -89,6 +93,7 @@ public class Animal {
         this.createdAt = createdAt;
         this.photos = photos;
         this.animalDescription = animalDescription;
+        this.user = user;
     }
 
     public int getId() {
@@ -233,6 +238,14 @@ public class Animal {
 
     public void setPhotos(List<AnimalPhotos> photos) {
         this.photos = photos;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

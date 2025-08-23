@@ -28,6 +28,12 @@ public class AnimalController {
         return ResponseEntity.status(response.status()).body(response);
     }
 
+    @GetMapping("/requests")
+    public ResponseEntity<ResponseApi<?>> getAnimalRequest(){
+        ResponseApi<?> response = animalService.findAnimalRequest();
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
     @GetMapping("/{state}")
     public ResponseEntity<ResponseApi<?>> getByState(@PathVariable String state) {
         ResponseApi<?> response = animalService.findByState(state);
