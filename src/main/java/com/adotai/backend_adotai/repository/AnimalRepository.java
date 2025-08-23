@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AnimalRepository extends JpaRepository<Animal, Integer> {
-    List<Animal> findByOngAddressState(States state);
+    List<Animal> findByOngAddressStateAndStatusTrue(States state);
     List<Animal> findByOngId(int id);
 
     @Modifying
@@ -21,4 +21,6 @@ public interface AnimalRepository extends JpaRepository<Animal, Integer> {
     int toggleStatusById(@Param("id") int id);
 
     List<Animal> findByUserIsNotNullAndStatusFalse();
+
+    List<Animal> findAllByStatusTrue();
 }
