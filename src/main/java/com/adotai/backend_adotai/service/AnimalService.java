@@ -2,6 +2,7 @@ package com.adotai.backend_adotai.service;
 
 import com.adotai.backend_adotai.dto.Animal.Request.RequestAnimalDto;
 import com.adotai.backend_adotai.dto.Animal.Request.RequestAnimalPhotosDTO;
+import com.adotai.backend_adotai.dto.Animal.Response.ReponseAnimalsRequestDto;
 import com.adotai.backend_adotai.dto.Animal.Response.ResponseAnimalDto;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
 import com.adotai.backend_adotai.entity.*;
@@ -28,48 +29,69 @@ public class AnimalService {
     private final BreedRepository breedRepository;
     private final SpecieRepository specieRepository;
     private final AnimalPhotosRepository animalPhotosRepository;
+    private final UserRepository userRepository;
 
     public AnimalService(AnimalRepository animalRepository,
                          OngRepository ongRepository,
                          ColorRepository colorRepository,
                          BreedRepository breedRepository,
                          SpecieRepository specieRepository,
-                         AnimalPhotosRepository animalPhotosRepository) {
+                         AnimalPhotosRepository animalPhotosRepository,
+                         UserRepository userRepository) {
         this.animalRepository = animalRepository;
         this.ongRepository = ongRepository;
         this.colorRepository = colorRepository;
         this.breedRepository = breedRepository;
         this.specieRepository = specieRepository;
         this.animalPhotosRepository = animalPhotosRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
     public ResponseApi<?> save(RequestAnimalDto dto) {
 
-        Optional<Ong> ong = ongRepository.findById(dto.ongId());
-        if (ong.isEmpty()) {
+        var ong = ongRepository.findById(dto.ongId())
+                .orElse(null);
+        if (ong == null) {
             return ResponseApi.error(404, "ONG NOT FOUND");
         }
 
         if (dto.photos() == null || dto.photos().isEmpty()) {
-            return ResponseApi.error(404, "Fotos faltando ou inválidas.");
+            return ResponseApi.error(400, "Fotos faltando ou inválidas.");
+        }
+
+        // Valida mínimos para evitar NPE em toUpperCase()
+        if (dto.species() == null || dto.species().description() == null ||
+                dto.breed() == null || dto.breed().name() == null ||
+                dto.color() == null || dto.color().name() == null) {
+            return ResponseApi.error(400, "Cor, raça e espécie são obrigatórias.");
         }
 
         String specieDesc = dto.species().description().toUpperCase();
-        String breedName = dto.breed().name().toUpperCase();
-        String colorName = dto.color().name().toUpperCase();
+        String breedName  = dto.breed().name().toUpperCase();
+        String colorName  = dto.color().name().toUpperCase();
 
         Specie specie = getOrCreateSpecie(specieDesc);
-        Breed breed = getOrCreateBreed(breedName, specie);
-        Color color = getOrCreateColor(colorName);
+        Breed  breed  = getOrCreateBreed(breedName, specie);
+        Color  color  = getOrCreateColor(colorName);
+
+        User user = null;
+        if (dto.userId() != null) {
+            user = userRepository.findById(dto.userId())
+                    .orElse(null);
+            if (user == null) {
+                return ResponseApi.error(404, "USER NOT FOUND");
+            }
+        }
 
         Timestamp now = Timestamp.from(Instant.now());
 
-        Animal animal = AnimalMapper.toEntity(dto, ong.get(), color, breed, specie, now);
+        Animal animal = AnimalMapper.toEntity(dto, ong, color, breed, specie, now, user);
         animalRepository.save(animal);
 
         return ResponseApi.success("Animal created successfully", AnimalMapper.toDto(animal));
     }
+
 
     public ResponseApi<?> findAll() {
         List<ResponseAnimalDto> dtos = animalRepository.findAllByStatusTrue().stream()
@@ -209,5 +231,15 @@ public class AnimalService {
         animalPhotosRepository.deleteByIdAndAnimalId(photoId, animalId);
 
         return ResponseApi.success("Foto deletada com sucesso", null);
+    }
+
+    public ResponseApi<?> findAnimalRequest() {
+        List<ReponseAnimalsRequestDto> dtos =
+                animalRepository.findByUserIsNotNullAndStatusFalse()
+                        .stream()
+                        .map(AnimalMapper::toRequestDto)
+                        .toList();
+
+        return ResponseApi.success("Animal found", dtos);
     }
 }
