@@ -28,9 +28,9 @@ public class AnimalController {
         return ResponseEntity.status(response.status()).body(response);
     }
 
-    @GetMapping("/requests")
-    public ResponseEntity<ResponseApi<?>> getAnimalRequest(){
-        ResponseApi<?> response = animalService.findAnimalRequest();
+    @GetMapping("/requests/{id}")
+    public ResponseEntity<ResponseApi<?>> getAnimalRequest(@PathVariable int id) {
+        ResponseApi<?> response = animalService.findAnimalRequest(id);
         return ResponseEntity.status(response.status()).body(response);
     }
 

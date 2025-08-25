@@ -233,9 +233,9 @@ public class AnimalService {
         return ResponseApi.success("Foto deletada com sucesso", null);
     }
 
-    public ResponseApi<?> findAnimalRequest() {
+    public ResponseApi<?> findAnimalRequest(int ongId) {
         List<ReponseAnimalsRequestDto> dtos =
-                animalRepository.findByUserIsNotNullAndStatusFalse()
+                animalRepository.findByUserIsNotNullAndStatusFalseAndOngId(ongId)
                         .stream()
                         .map(AnimalMapper::toRequestDto)
                         .toList();
