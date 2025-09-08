@@ -7,18 +7,20 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends Account{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String name;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private int id;
+//    private String name;
+//    private String email;
+//    private String password;
+
     private String cpf;
-    private String email;
 
     @Enumerated(EnumType.STRING)
     private Role role;
-    private String password;
+
     private String telephone;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "address_id", nullable = false)
@@ -27,39 +29,29 @@ public class User {
     public User() {}
 
     public User(String name, String cpf, String email, Role role, String password, String telephone, Address address) {
-        this.name = name;
+        super.setName(name);
+        super.setEmail(email);
+        super.setPassword(password);
         this.cpf = cpf;
-        this.email = email;
         this.role = role;
-        this.password = password;
         this.telephone = telephone;
         this.address = address;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public String getName() {
-        return name;
-    }
 
     public String getCpf() {
         return cpf;
     }
 
-    public String getEmail() {
-        return email;
-    }
+
 
     public Role getRole() {
         return role;
     }
 
 
-    public String getPassword() {
-        return password;
-    }
+
 
     public String getTelephone() {
         return telephone;
@@ -69,25 +61,18 @@ public class User {
         return address;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+
 
     public void setRole(Role role) {
         this.role = role;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
@@ -100,12 +85,12 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
                 ", cpf='" + cpf + '\'' +
-                ", email='" + email + '\'' +
+                ", email='" + getEmail() + '\'' +
                 ", role='" + role + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + getPassword() + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", address=" + address +
                 '}';
@@ -116,11 +101,18 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(name, user.name) && Objects.equals(cpf, user.cpf) && Objects.equals(email, user.email) && Objects.equals(role, user.role) && Objects.equals(password, user.password) && Objects.equals(telephone, user.telephone) && Objects.equals(address, user.address);
+        return Objects.equals(getId(), user.getId()) &&
+                Objects.equals(getName(), user.getName()) &&
+                Objects.equals(cpf, user.cpf) &&
+                Objects.equals(getEmail(), user.getEmail()) &&
+                role == user.role &&
+                Objects.equals(getPassword(), user.getPassword()) &&
+                Objects.equals(telephone, user.telephone) &&
+                Objects.equals(address, user.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, cpf, email, role, password, telephone, address);
+        return Objects.hash(getId(), getName(), cpf, getEmail(), role, getPassword(), telephone, address);
     }
 }

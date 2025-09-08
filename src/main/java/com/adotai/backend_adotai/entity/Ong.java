@@ -9,16 +9,16 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "ongs")
-public class Ong {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Ong extends Account {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private int id;
+//    private String name;
+//    private String email;
+//    private String password;
 
-    private String name;
     private String phone;
     private String cnpj;
-    private String email;
-    private String password;
     private String pix;
 
     @Column(name = "social_statute")
@@ -41,12 +41,12 @@ public class Ong {
     private List<OngPhotos> photos;
 
     public Ong(String name, String phone,String pix ,String cnpj, String email, String password, String socialStatute, String boardMeeting, Address address, boolean status, String description,List<OngPhotos> photos) {
-        this.name = name;
+        super.setName(name);
+        super.setEmail(email);
+        super.setPassword(password);
         this.phone = phone;
         this.pix = pix;
         this.cnpj = cnpj;
-        this.email = email;
-        this.password = password;
         this.socialStatute = socialStatute;
         this.boardMeeting = boardMeeting;
         this.address = address;
@@ -73,9 +73,7 @@ public class Ong {
         this.photos = photos;
     }
 
-    public int getId() {
-        return id;
-    }
+
 
     public String getPix() {
         return pix;
@@ -85,13 +83,7 @@ public class Ong {
         this.pix = pix;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getPhone() {
         return phone;
@@ -109,21 +101,6 @@ public class Ong {
         this.cnpj = cnpj;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getSocialStatute() {
         return socialStatute;
@@ -160,12 +137,12 @@ public class Ong {
     @Override
     public String toString() {
         return "Ong{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
                 ", phone='" + phone + '\'' +
                 ", cnpj='" + cnpj + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", password='" + getPassword() + '\'' +
                 ", socialStatute='" + socialStatute + '\'' +
                 ", boardMeeting='" + boardMeeting + '\'' +
                 ", address=" + address +
@@ -180,11 +157,23 @@ public class Ong {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ong ong = (Ong) o;
-        return id == ong.id && status == ong.status && Objects.equals(name, ong.name) && Objects.equals(phone, ong.phone) && Objects.equals(cnpj, ong.cnpj) && Objects.equals(email, ong.email) && Objects.equals(password, ong.password) && Objects.equals(socialStatute, ong.socialStatute) && Objects.equals(boardMeeting, ong.boardMeeting) && Objects.equals(address, ong.address) && Objects.equals(photos, ong.photos)  && Objects.equals(description, ong.description);
+        return status == ong.status &&
+                Objects.equals(getId(), ong.getId()) &&
+                Objects.equals(getName(), ong.getName()) &&
+                Objects.equals(phone, ong.phone) &&
+                Objects.equals(cnpj, ong.cnpj) &&
+                Objects.equals(getEmail(), ong.getEmail()) &&
+                Objects.equals(getPassword(), ong.getPassword()) &&
+                Objects.equals(socialStatute, ong.socialStatute) &&
+                Objects.equals(boardMeeting, ong.boardMeeting) &&
+                Objects.equals(address, ong.address) &&
+                Objects.equals(photos, ong.photos) &&
+                Objects.equals(description, ong.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, phone, cnpj, email, password, socialStatute, boardMeeting, address, status, photos, description);
+        return Objects.hash(getId(), getName(), phone, cnpj, getEmail(), getPassword(), socialStatute, boardMeeting, address, status, photos, description);
     }
+
 }
