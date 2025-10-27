@@ -1,0 +1,2 @@
+ALTER TABLE animals
+ADD COLUMN solicitation_status BOOLEAN NOT NULL DEFAULT FALSE;

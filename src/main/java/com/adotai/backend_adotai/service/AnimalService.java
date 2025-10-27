@@ -134,6 +134,7 @@ public class AnimalService {
         animal.setDewormed(dto.dewormed());
         animal.setTemperament(dto.temperament());
         animal.setAnimalDescription(dto.animalDescription());
+        animal.setStatus(dto.solicitationStatus());
 
         List<AnimalPhotos> existingPhotos = animal.getPhotos();
 
@@ -232,6 +233,20 @@ public class AnimalService {
 
         return ResponseApi.success("Foto deletada com sucesso", null);
     }
+
+    public ResponseApi<?> getAnimal(int id) {
+        Optional<Animal> optionalAnimal = animalRepository.findById(id);
+
+        if (optionalAnimal.isEmpty()) {
+            return ResponseApi.error(404, "Animal not found with id: " + id);
+        }
+
+        Animal animal = optionalAnimal.get();
+        ResponseAnimalDto dto = AnimalMapper.toDto(animal);
+
+        return ResponseApi.success("Animal found successfully", dto);
+    }
+
 
     public ResponseApi<?> findAnimalRequest(int ongId) {
         List<ReponseAnimalsRequestDto> dtos =

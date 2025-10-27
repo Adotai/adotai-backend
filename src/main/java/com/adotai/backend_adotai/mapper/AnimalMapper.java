@@ -44,7 +44,8 @@ public class AnimalMapper {
                 createdAt,
                 photos,
                 dto.animalDescription(),
-                user
+                user,
+                dto.solicitationStatus()
         );
 
         photos.forEach(photo -> photo.setAnimal(animal));
@@ -83,7 +84,8 @@ public class AnimalMapper {
                 animal.getTemperament(),
                 animal.getCreatedAt(),
                 photosDto,
-                animal.getAnimalDescription()
+                animal.getAnimalDescription(),
+                animal.getSolicitation_status()
         );
     }
 
@@ -113,7 +115,8 @@ public class AnimalMapper {
                 animal.getCreatedAt(),
                 photosDto,
                 animal.getAnimalDescription(),
-                userDto
+                userDto,
+                animal.getSolicitation_status()
         );
     }
 }

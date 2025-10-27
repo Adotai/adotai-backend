@@ -34,6 +34,12 @@ public class AnimalController {
         return ResponseEntity.status(response.status()).body(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseApi<?>> getAnimalById(@PathVariable int id) {
+        ResponseApi<?> response = animalService.getAnimal(id);
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
     @GetMapping("/{state}")
     public ResponseEntity<ResponseApi<?>> getByState(@PathVariable String state) {
         ResponseApi<?> response = animalService.findByState(state);

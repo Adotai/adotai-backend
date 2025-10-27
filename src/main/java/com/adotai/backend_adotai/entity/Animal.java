@@ -1,7 +1,6 @@
 package com.adotai.backend_adotai.entity;
 
 import com.adotai.backend_adotai.entity.PhotosEntities.AnimalPhotos;
-import com.adotai.backend_adotai.entity.PhotosEntities.OngPhotos;
 import com.adotai.backend_adotai.entity.enum_types.Gender;
 import com.adotai.backend_adotai.entity.enum_types.HealthStatus;
 import com.adotai.backend_adotai.entity.enum_types.Size;
@@ -48,6 +47,10 @@ public class Animal {
     private HealthStatus health;
 
     private boolean status;
+
+    @Column(name = "solicitation_status", nullable = false)
+    private boolean solicitation_status;
+
     private boolean vaccinated;
     private boolean neutered;
     private boolean dewormed;
@@ -75,7 +78,7 @@ public class Animal {
 
     public Animal(Ong ong, String name, Gender gender, Color color, Breed breed, Specie species, Integer age,Size size, HealthStatus health,
                   boolean status, boolean vaccinated, boolean neutered, boolean dewormed, Temperament temperament,
-                  Timestamp createdAt, List<AnimalPhotos> photos, String animalDescription, User user) {
+                  Timestamp createdAt, List<AnimalPhotos> photos, String animalDescription, User user, boolean solicitation_status) {
         this.ong = ong;
         this.name = name;
         this.gender = gender;
@@ -94,6 +97,7 @@ public class Animal {
         this.photos = photos;
         this.animalDescription = animalDescription;
         this.user = user;
+        this.solicitation_status = solicitation_status;
     }
 
     public int getId() {
@@ -246,6 +250,13 @@ public class Animal {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setSolicitation_status(boolean solicitationStatus) {
+        this.solicitation_status = solicitationStatus;
+    }
+    public boolean getSolicitation_status() {
+        return solicitation_status;
     }
 
     @Override

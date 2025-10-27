@@ -28,6 +28,7 @@ public record ReponseAnimalsRequestDto(
         Timestamp createdAt,
         List<ResponseAnimalPhotosDTO> photos,
         String animalDescription,
-        ResponseUserDTO user
+        ResponseUserDTO user,
+        boolean solicitationStatus
 ) {
 }
