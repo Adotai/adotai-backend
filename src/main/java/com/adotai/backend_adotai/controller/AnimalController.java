@@ -34,7 +34,7 @@ public class AnimalController {
         return ResponseEntity.status(response.status()).body(response);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("id/{id}")
     public ResponseEntity<ResponseApi<?>> getAnimalById(@PathVariable int id) {
         ResponseApi<?> response = animalService.getAnimal(id);
         return ResponseEntity.status(response.status()).body(response);
