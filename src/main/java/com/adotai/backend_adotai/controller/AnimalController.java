@@ -1,6 +1,7 @@
 package com.adotai.backend_adotai.controller;
 
 import com.adotai.backend_adotai.dto.Animal.Request.RequestAnimalDto;
+import com.adotai.backend_adotai.dto.Animal.Request.RequestStatusUpdateDto;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
 import com.adotai.backend_adotai.service.AnimalService;
 import org.springframework.http.ResponseEntity;
@@ -65,8 +66,11 @@ public class AnimalController {
     }
 
     @PutMapping("/status/{id}")
-    public ResponseEntity<ResponseApi<?>> updateStatusById(@PathVariable int id){
-        ResponseApi<?> response = animalService.updateStatusById(id);
+    public ResponseEntity<ResponseApi<?>> updateStatusById(
+            @PathVariable int id,
+            @RequestBody RequestStatusUpdateDto dto
+    ) {
+        ResponseApi<?> response = animalService.updateAnimalStatuses(id, dto);
         return ResponseEntity.status(response.status()).body(response);
     }
 

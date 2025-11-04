@@ -20,7 +20,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Integer> {
     @Query("UPDATE Animal o SET o.status = CASE WHEN o.status = TRUE THEN FALSE ELSE TRUE END WHERE o.id = :id")
     int toggleStatusById(@Param("id") int id);
 
-    List<Animal> findByUserIsNotNullAndStatusFalseAndOngId(Integer id);
-
+    @Query("SELECT a FROM Animal a WHERE a.user IS NOT NULL AND a.solicitation_status = true AND a.ong.id = :ongId")
+    List<Animal> findByUserIsNotNullAndSolicitationStatusTrueAndOngId(@Param("ongId") Integer ongId);
     List<Animal> findAllByStatusTrue();
 }

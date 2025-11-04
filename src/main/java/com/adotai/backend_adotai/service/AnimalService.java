@@ -2,6 +2,7 @@ package com.adotai.backend_adotai.service;
 
 import com.adotai.backend_adotai.dto.Animal.Request.RequestAnimalDto;
 import com.adotai.backend_adotai.dto.Animal.Request.RequestAnimalPhotosDTO;
+import com.adotai.backend_adotai.dto.Animal.Request.RequestStatusUpdateDto;
 import com.adotai.backend_adotai.dto.Animal.Response.ReponseAnimalsRequestDto;
 import com.adotai.backend_adotai.dto.Animal.Response.ResponseAnimalDto;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
@@ -182,6 +183,25 @@ public class AnimalService {
     }
 
     @Transactional
+    public ResponseApi<?> updateAnimalStatuses(int id, RequestStatusUpdateDto dto) {
+        Optional<Animal> animalOptional = animalRepository.findById(id);
+        if (animalOptional.isEmpty()) {
+            return ResponseApi.error(404, "Animal não encontrado.");
+        }
+
+        Animal animal = animalOptional.get();
+        if (dto.status() != null) {
+            animal.setStatus(dto.status());
+        }
+        if (dto.solicitationStatus() != null) {
+            animal.setSolicitation_status(dto.solicitationStatus());
+        }
+
+        animalRepository.save(animal);
+        return ResponseApi.success("Status atualizados com sucesso", null);
+    }
+
+    @Transactional
     public ResponseApi<?> deleteById(int id){
         Optional<Animal> animal = animalRepository.findById(id);
 
@@ -250,7 +270,7 @@ public class AnimalService {
 
     public ResponseApi<?> findAnimalRequest(int ongId) {
         List<ReponseAnimalsRequestDto> dtos =
-                animalRepository.findByUserIsNotNullAndStatusFalseAndOngId(ongId)
+                animalRepository.findByUserIsNotNullAndSolicitationStatusTrueAndOngId(ongId)
                         .stream()
                         .map(AnimalMapper::toRequestDto)
                         .toList();
