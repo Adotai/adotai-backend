@@ -1,8 +1,12 @@
 package com.adotai.backend_adotai.entity;
 
+import com.adotai.backend_adotai.entity.enum_types.Gender;
+import com.adotai.backend_adotai.entity.enum_types.HouseSize;
+import com.adotai.backend_adotai.entity.enum_types.HouseType;
 import com.adotai.backend_adotai.entity.enum_types.Role;
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -19,9 +23,29 @@ public class User extends Account{
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
+    private String description;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "birth_date")
+    private Date birthDate;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Column(name = "animals_quantity")
+    private String animalsQuantity;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "house_type")
+    private HouseType houseType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "house_size")
+    private HouseSize houseSize;
+
     public User() {}
 
-    public User(String name, String cpf, String email, Role role, String password, String telephone, Address address) {
+    public User(String name, String cpf, String email, Role role, String password, String telephone, Address address, String description, Date birthDate, Gender gender, String animalsQuantity, HouseType houseType, HouseSize houseSize) {
         super.setName(name);
         super.setEmail(email);
         super.setPassword(password);
@@ -29,6 +53,12 @@ public class User extends Account{
         this.role = role;
         this.telephone = telephone;
         this.address = address;
+        this.description = description;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.animalsQuantity = animalsQuantity;
+        this.houseType = houseType;
+        this.houseSize = houseSize;
     }
 
 
@@ -75,6 +105,52 @@ public class User extends Account{
         this.address = address;
     }
 
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+    public void setGender(Gender g) {
+        this.gender = g;
+    }
+
+    public String getAnimalsQuantity() {
+        return animalsQuantity;
+    }
+
+    public void setAnimalsQuantity(String animalsQuantity) {
+        this.animalsQuantity = animalsQuantity;
+    }
+
+    public HouseType getHouseType() {
+        return houseType;
+    }
+
+    public void setHouseType(HouseType houseType) {
+        this.houseType = houseType;
+    }
+
+    public HouseSize getHouseSize() {
+        return houseSize;
+    }
+
+    public void setHouseSize(HouseSize houseSize) {
+        this.houseSize = houseSize;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -101,7 +177,8 @@ public class User extends Account{
                 role == user.role &&
                 Objects.equals(getPassword(), user.getPassword()) &&
                 Objects.equals(telephone, user.telephone) &&
-                Objects.equals(address, user.address);
+                Objects.equals(address, user.address) ;
+
     }
 
     @Override

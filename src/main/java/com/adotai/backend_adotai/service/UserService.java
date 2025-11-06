@@ -63,6 +63,18 @@ public class UserService {
             return ResponseApi.error(404,"Invalid or empty password");
         }
 
+        if(dto.description().isBlank()){
+            return ResponseApi.error(404,"Description cannot be empty");
+        }
+
+        if(dto.gender() == null){
+            return ResponseApi.error(404,"Gender cannot be null");
+        }
+
+        if(dto.birthDate() == null){
+            return ResponseApi.error(404,"Birth date cannot be null");
+        }
+
         String encodedPassword = passwordEncoder.encode(dto.password());
         User user = UserMapper.toEntity(dto, address.get(), encodedPassword);
 
@@ -137,6 +149,30 @@ public class UserService {
         if (dto.password() != null && !dto.password().isBlank()) {
             String encodedPassword = passwordEncoder.encode(dto.password());
             existingUser.setPassword(encodedPassword);
+        }
+
+        if (dto.description() != null && !dto.description().isBlank()) {
+            existingUser.setDescription(dto.description());
+        }
+
+        if( dto.birthDate() != null) {
+            existingUser.setBirthDate(dto.birthDate());
+        }
+
+        if(dto.gender() != null) {
+            existingUser.setGender(dto.gender());
+        }
+
+        if(dto.animalsQuantity() != null && !dto.animalsQuantity().isBlank()) {
+            existingUser.setAnimalsQuantity(dto.animalsQuantity());
+        }
+
+        if(dto.houseType() != null) {
+            existingUser.setHouseType(dto.houseType());
+        }
+
+        if(dto.houseSize() != null) {
+            existingUser.setHouseSize(dto.houseSize());
         }
 
         try {

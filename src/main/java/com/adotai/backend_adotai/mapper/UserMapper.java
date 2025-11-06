@@ -18,7 +18,13 @@ public class UserMapper {
                     parseRole(dto.role()),
                     encodedPassword,
                     ValidationUtils.formatStrNumber(dto.telephone()),
-                    address
+                    address,
+                    dto.description(),
+                    dto.birthDate(),
+                    dto.gender(),
+                    dto.animalsQuantity(),
+                    dto.houseType(),
+                    dto.houseSize()
             );
         }
 
@@ -32,7 +38,14 @@ public class UserMapper {
                 user.getEmail(),
                 user.getTelephone(),
                 user.getRole().name(),
-                addressDto
+                addressDto,
+                user.getDescription(),
+                user.getBirthDate(),
+                user.getGender(),
+                user.getAnimalsQuantity(),
+                user.getHouseType(),
+                user.getHouseSize()
+
         );
     }
 

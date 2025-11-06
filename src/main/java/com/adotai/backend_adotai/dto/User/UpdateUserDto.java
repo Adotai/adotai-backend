@@ -1,6 +1,9 @@
 package com.adotai.backend_adotai.dto.User;
 
 import com.adotai.backend_adotai.entity.Address;
+import com.adotai.backend_adotai.entity.enum_types.Gender;
+import com.adotai.backend_adotai.entity.enum_types.HouseSize;
+import com.adotai.backend_adotai.entity.enum_types.HouseType;
 
 public record UpdateUserDto(
         int id,
@@ -10,6 +13,12 @@ public record UpdateUserDto(
         String password,
         String telephone,
         Address address,
-        int addressId
+        int addressId,
+        String description,
+        java.util.Date birthDate,
+        Gender gender,
+        String animalsQuantity,
+        HouseType houseType,
+        HouseSize houseSize
 ) {
 }
