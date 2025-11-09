@@ -5,6 +5,8 @@ import com.adotai.backend_adotai.entity.enum_types.Gender;
 import com.adotai.backend_adotai.entity.enum_types.HouseSize;
 import com.adotai.backend_adotai.entity.enum_types.HouseType;
 
+import java.util.List;
+
 public record UpdateUserDto(
         int id,
         String name,
@@ -19,6 +21,7 @@ public record UpdateUserDto(
         Gender gender,
         String animalsQuantity,
         HouseType houseType,
-        HouseSize houseSize
+        HouseSize houseSize,
+        List<UpdateUserPhotosDTO> photos
 ) {
 }

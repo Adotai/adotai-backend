@@ -1,6 +1,8 @@
 package com.adotai.backend_adotai.controller;
 
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
+import com.adotai.backend_adotai.dto.Ong.DeleteOngPhotosDTO;
+import com.adotai.backend_adotai.dto.User.DeleteUserPhotosDTO;
 import com.adotai.backend_adotai.dto.User.UpdateUserDto;
 import com.adotai.backend_adotai.dto.User.request.RequestUserDTO;
 import com.adotai.backend_adotai.dto.User.response.ResponseUserDTO;
@@ -30,6 +32,12 @@ public class UserController {
     @PutMapping
     public ResponseEntity<ResponseApi<?>> updateUser(@RequestBody UpdateUserDto dto) {
         ResponseApi<?> response = userService.updateUser(dto);
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
+    @PostMapping("/delete-photo")
+    public ResponseEntity<ResponseApi<String>> deletePhotos(@RequestBody DeleteUserPhotosDTO dto) {
+        ResponseApi<String> response = userService.deleteUserPhotos(dto.id(), dto.photoIdsToDelete());
         return ResponseEntity.status(response.status()).body(response);
     }
 

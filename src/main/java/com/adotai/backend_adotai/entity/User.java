@@ -1,5 +1,6 @@
 package com.adotai.backend_adotai.entity;
 
+import com.adotai.backend_adotai.entity.PhotosEntities.UserPhotos;
 import com.adotai.backend_adotai.entity.enum_types.Gender;
 import com.adotai.backend_adotai.entity.enum_types.HouseSize;
 import com.adotai.backend_adotai.entity.enum_types.HouseType;
@@ -7,6 +8,7 @@ import com.adotai.backend_adotai.entity.enum_types.Role;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -43,9 +45,12 @@ public class User extends Account{
     @Column(name = "house_size")
     private HouseSize houseSize;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserPhotos> photos;
+
     public User() {}
 
-    public User(String name, String cpf, String email, Role role, String password, String telephone, Address address, String description, Date birthDate, Gender gender, String animalsQuantity, HouseType houseType, HouseSize houseSize) {
+    public User(String name, String cpf, String email, Role role, String password, String telephone, Address address, String description, Date birthDate, Gender gender, String animalsQuantity, HouseType houseType, HouseSize houseSize, List<UserPhotos> photos) {
         super.setName(name);
         super.setEmail(email);
         super.setPassword(password);
@@ -59,9 +64,8 @@ public class User extends Account{
         this.animalsQuantity = animalsQuantity;
         this.houseType = houseType;
         this.houseSize = houseSize;
+        this.photos = photos;
     }
-
-
 
     public String getCpf() {
         return cpf;
@@ -149,6 +153,14 @@ public class User extends Account{
 
     public void setHouseSize(HouseSize houseSize) {
         this.houseSize = houseSize;
+    }
+
+    public List<UserPhotos> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<UserPhotos> photos) {
+        this.photos = photos;
     }
 
     @Override

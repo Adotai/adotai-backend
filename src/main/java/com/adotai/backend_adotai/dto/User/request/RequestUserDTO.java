@@ -1,10 +1,12 @@
 package com.adotai.backend_adotai.dto.User.request;
 
+
 import com.adotai.backend_adotai.entity.enum_types.Gender;
 import com.adotai.backend_adotai.entity.enum_types.HouseSize;
 import com.adotai.backend_adotai.entity.enum_types.HouseType;
 
 import java.util.Date;
+import java.util.List;
 
 public record RequestUserDTO(String name,
                              String cpf,
@@ -18,6 +20,7 @@ public record RequestUserDTO(String name,
                              Gender gender,
                              String animalsQuantity,
                              HouseType houseType,
-                             HouseSize houseSize) {
+                             HouseSize houseSize,
+                             List<RequestUserPhotosDTO> photos) {
 }
 

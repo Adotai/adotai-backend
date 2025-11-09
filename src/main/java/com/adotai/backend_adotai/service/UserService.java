@@ -4,11 +4,14 @@ import com.adotai.backend_adotai.dto.Address.UpdateAddressDto;
 import com.adotai.backend_adotai.dto.Address.response.ResponseAddressDTO;
 import com.adotai.backend_adotai.dto.Api.ResponseApi;
 import com.adotai.backend_adotai.dto.User.UpdateUserDto;
+import com.adotai.backend_adotai.dto.User.UpdateUserPhotosDTO;
 import com.adotai.backend_adotai.dto.User.request.RequestUserDTO;
 import com.adotai.backend_adotai.dto.User.response.ResponseUserDTO;
 import com.adotai.backend_adotai.entity.Address;
+import com.adotai.backend_adotai.entity.PhotosEntities.UserPhotos;
 import com.adotai.backend_adotai.entity.User;
 import com.adotai.backend_adotai.mapper.AddressMapper;
+import com.adotai.backend_adotai.mapper.PhotosMapper.UserPhotosMapper;
 import com.adotai.backend_adotai.mapper.UserMapper;
 import com.adotai.backend_adotai.repository.AddressRepository;
 import com.adotai.backend_adotai.repository.UserRepository;
@@ -16,8 +19,11 @@ import com.adotai.backend_adotai.util.ValidationUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -175,12 +181,73 @@ public class UserService {
             existingUser.setHouseSize(dto.houseSize());
         }
 
+        if (dto.photos() != null) {
+            Map<Integer, UserPhotos> existingPhotosMap = existingUser.getPhotos().stream()
+                    .collect(Collectors.toMap(UserPhotos::getId, photo -> photo));
+
+            List<UserPhotos> updatedPhotos = new ArrayList<>();
+
+            for (UpdateUserPhotosDTO updatedPhotoDto : dto.photos()) {
+                if (updatedPhotoDto.id() != null && existingPhotosMap.containsKey(updatedPhotoDto.id())) {
+                    // Atualiza foto existente
+                    UserPhotos existingPhoto = existingPhotosMap.get(updatedPhotoDto.id());
+                    existingPhoto.setPhotoUrl(updatedPhotoDto.photoUrl());
+                    updatedPhotos.add(existingPhoto);
+                } else {
+                    // Nova foto
+                    UserPhotos newPhoto = UserPhotosMapper.toEntity(updatedPhotoDto);
+                    newPhoto.setUser(existingUser);
+                    updatedPhotos.add(newPhoto);
+                }
+            }
+            existingUser.getPhotos().addAll(updatedPhotos);
+        }
+
         try {
             User updatedUser = userRepository.save(existingUser);
             return ResponseApi.success("User updated successfully", UserMapper.toDto(updatedUser));
         } catch (Exception e) {
             return ResponseApi.error(500, e.getMessage());
         }
+    }
+
+
+    public ResponseApi<String> deleteUserPhotos(Integer userId, List<Integer> photoIdsToDelete) {
+        if (photoIdsToDelete == null || photoIdsToDelete.isEmpty()) {
+            return ResponseApi.error(400, "Nenhuma foto selecionada para exclusão.");
+        }
+
+        if (photoIdsToDelete.size() > 3) {
+            return ResponseApi.error(400, "Você só pode excluir até 3 fotos por vez.");
+        }
+
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isEmpty()) {
+            return ResponseApi.error(404, "Usuário não encontrado.");
+        }
+
+        User user = userOpt.get();
+
+        // Filtra as fotos restantes
+        List<UserPhotos> remainingPhotos = user.getPhotos().stream()
+                .filter(photo -> !photoIdsToDelete.contains(photo.getId()))
+                .collect(Collectors.toList());
+
+        // Garante que todas as fotos a excluir pertencem ao usuário
+        long matchedCount = user.getPhotos().stream()
+                .filter(photo -> photoIdsToDelete.contains(photo.getId()))
+                .count();
+
+        if (matchedCount != photoIdsToDelete.size()) {
+            return ResponseApi.error(400, "Uma ou mais fotos não pertencem a esse usuário.");
+        }
+
+        user.getPhotos().clear();
+        user.getPhotos().addAll(remainingPhotos);
+
+        userRepository.save(user);
+
+        return ResponseApi.success("Fotos excluídas com sucesso.", null);
     }
 
 

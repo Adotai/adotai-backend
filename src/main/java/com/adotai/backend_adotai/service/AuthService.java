@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Service
@@ -55,7 +56,7 @@ public class AuthService {
                     .issuer("adotai")
                     .subject(ong.getEmail())
                     .issuedAt(now)
-                    .expiresAt(now.plusSeconds(3600)) // 1 hora
+                    .expiresAt(now.plus(30, ChronoUnit.DAYS)) // 1 mês
                     .claim("role", "ong")
                     .build();
 
@@ -74,7 +75,7 @@ public class AuthService {
                 .issuer("adotai")
                 .subject(user.getEmail())
                 .issuedAt(now)
-                .expiresAt(now.plusSeconds(3600)) // 1 hora
+                .expiresAt(now.plus(30, ChronoUnit.DAYS)) // 1 mês
                 .claim("role", user.getRole())
                 .build();
 
