@@ -14,6 +14,10 @@ import com.adotai.backend_adotai.repository.*;
 import com.adotai.backend_adotai.repository.PhotosRepository.AnimalPhotosRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -276,5 +280,29 @@ public class AnimalService {
                         .toList();
 
         return ResponseApi.success("Animal found", dtos);
+    }
+
+    public ResponseApi<?> findByBreedPaged(String filter, int pageNumber, int pageSize, String sortField, String sortDirection) {
+        if (pageNumber < 0 || pageSize <= 0) {
+            return ResponseApi.error(400, "Invalid pagination parameters.");
+        }
+
+        Sort.Direction direction;
+        try {
+            direction = Sort.Direction.fromString(sortDirection != null ? sortDirection : "ASC");
+        } catch (IllegalArgumentException e) {
+            direction = Sort.Direction.ASC; // fallback se vier algo inválido
+        }
+
+        Sort sort = Sort.by(direction, sortField != null ? sortField : "id");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<Animal> page = animalRepository.findByBreedName(filter, pageable);
+
+        if (page.isEmpty()) {
+            return ResponseApi.error(404, "No animals found for this breed.");
+        }
+
+        return ResponseApi.success("Animals found", page.map(AnimalMapper::toDto));
     }
 }

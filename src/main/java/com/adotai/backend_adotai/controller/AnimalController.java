@@ -79,4 +79,16 @@ public class AnimalController {
         ResponseApi<?> response = animalService.deleteAnimalPhoto(animalId, photoId);
         return ResponseEntity.status(response.status()).body(response);
     }
+
+    @GetMapping("/breed")
+    public ResponseEntity<ResponseApi<?>> getAnimalsByBreed(
+            @RequestParam(required = false) String filter,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "asc") String direction) {
+
+        return ResponseEntity.ok(animalService.findByBreedPaged(filter, page, size, sort, direction));
+    }
+
 }
