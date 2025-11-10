@@ -47,6 +47,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/animal").permitAll()
                         .requestMatchers(HttpMethod.POST, "/chat/room").permitAll()
                         .requestMatchers(HttpMethod.GET, "/chat").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/pdf").authenticated()
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())

@@ -91,4 +91,10 @@ public class AnimalController {
         return ResponseEntity.ok(animalService.findByBreedPaged(filter, page, size, sort, direction));
     }
 
+
+    @PutMapping("/adopt/{animalId}/{newOwnerId}")
+    public ResponseEntity<ResponseApi<?>> adoptAnimal(@PathVariable int animalId, @PathVariable int newOwnerId) {
+        ResponseApi<?> response = animalService.adoptAnimal(animalId, newOwnerId);
+        return ResponseEntity.status(response.status()).body(response);
+    }
 }

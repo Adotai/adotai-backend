@@ -282,6 +282,26 @@ public class AnimalService {
         return ResponseApi.success("Animal found", dtos);
     }
 
+    public ResponseApi<?> adoptAnimal(int animalId, int newOwnerId) {
+        try {
+            Animal animal = animalRepository.findById(animalId).orElse(null);
+            User newOwner = userRepository.findById(newOwnerId).orElse(null);
+
+            if (animal == null || newOwner == null) {
+                return ResponseApi.error(404, "Animal ou Usuário não encontrado.");
+            }
+
+            animal.setUser(newOwner);
+            animal.setStatus(false);
+            animal.setSolicitation_status(false);
+
+            animalRepository.save(animal);
+            return ResponseApi.success("Adoção registrada com sucesso!", AnimalMapper.toDto(animal));
+        } catch (Exception e) {
+            return ResponseApi.error(500, "Erro ao registrar adoção: " + e.getMessage());
+        }
+    }
+
     public ResponseApi<?> findByBreedPaged(String filter, int pageNumber, int pageSize, String sortField, String sortDirection) {
         if (pageNumber < 0 || pageSize <= 0) {
             return ResponseApi.error(400, "Invalid pagination parameters.");
